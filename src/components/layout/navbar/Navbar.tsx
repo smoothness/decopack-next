@@ -1,4 +1,4 @@
-import {getMenu} from '@/lib/shopify'
+import {getMenu} from '@/libs/shopify'
 
 export async function Navbar() {
   const menu = await getMenu('main-menu')

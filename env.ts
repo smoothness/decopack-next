@@ -6,7 +6,7 @@ const envSchema = z.object({
   SHOPIFY_REVALIDATION_SECRET: z.string(),
   SHOPIFY_STOREFRONT_ACCESS_TOKEN: z.string(),
   SHOPIFY_STORE_DOMAIN: z.string(),
-
+  SHOPIFY_API_VERSION: z.string(),
 });
 
 envSchema.parse(process.env);

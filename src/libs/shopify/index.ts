@@ -1,18 +1,28 @@
-import { Menu, ShopifyMenuOperation } from '@/lib/shopify/types'
-import { getMenuQuery } from '@/lib/shopify/queries/menu'
-import { TAGS, SHOPIFY_GRAPHQL_API_ENDPOINT } from '@/lib/constants'
-import { isShopifyError } from '@/lib/type-guards'
-import { ensureStartWith } from '@/lib/utils'
+import { Menu, ShopifyMenuOperation } from '@/libs/shopify/types'
+import { getMenuQuery } from '@/libs/shopify/queries/menu'
+import { TAGS } from '@/libs/constants'
+import { isShopifyError } from '@/libs/type-guards'
+import { ensureStartWith } from '@/libs/utils'
 
 type ExtractVariables<T> = T extends { variables: object }
   ? T['variables']
   : never
 
-const domain = process.env.SHOPIFY_STORE_DOMAIN
-  ? ensureStartWith(process.env.SHOPIFY_STORE_DOMAIN, 'https://')
-  : ''
-const endpoint = `${domain}/api/${SHOPIFY_GRAPHQL_API_ENDPOINT}/graphql.json`
-const key = process.env.SHOPIFY_STOREFRONT_ACCESS_TOKEN
+// Check if environment variables are defined
+if (!process.env.SHOPIFY_STORE_DOMAIN) {
+  throw new Error('SHOPIFY_STORE_DOMAIN environment variable is not defined');
+}
+if (!process.env.SHOPIFY_API_VERSION) {
+  throw new Error('SHOPIFY_API_VERSION environment variable is not defined');
+}
+if (!process.env.SHOPIFY_STOREFRONT_ACCESS_TOKEN) {
+  throw new Error('SHOPIFY_STOREFRONT_ACCESS_TOKEN environment variable is not defined');
+}
+
+const domain = ensureStartWith(process.env.SHOPIFY_STORE_DOMAIN, 'https://');
+const api_version = process.env.SHOPIFY_API_VERSION;
+const endpoint = `${domain}/api/${api_version}/graphql.json`;
+const key = process.env.SHOPIFY_STOREFRONT_ACCESS_TOKEN;
 
 export async function shopifyFetch<T>({
   cache = 'force-cache',
