@@ -1,6 +1,4 @@
-
 // src/libs/tracking/types.tracking.d.ts
-
 // Extend the global namespace to recognize GTM-related properties
 declare global {
   interface Window {
@@ -35,4 +33,20 @@ declare namespace Gtag {
     category: string
     label: string
   }
+}
+
+// Add your type definitions here
+export namespace Gtag {
+  interface Gtag {
+    (command: 'config', targetId: string, config?: ControlParams | EventParams): void
+    (command: 'event', action: EventNames | string, params?: ControlParams | EventParams | CustomParams): void
+    (command: 'consent', action: 'default' | 'update', params: ConsentParams): void
+  }
+}
+
+export interface GtagEvent {
+  action: string
+  category: string
+  label?: string
+  value?: number
 }

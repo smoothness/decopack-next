@@ -1,5 +1,10 @@
 import type {Metadata} from 'next'
 import {Geist, Geist_Mono} from 'next/font/google'
+
+import {GoogleTagManager} from '@/libs/tracking/GoogleTagManager'
+import {IS_GTM_ENABLED} from '@/libs/tracking/config.tracking'
+import {RootInnerLayout} from '@/components/layout/RootInnerLayout'
+
 import './globals.css'
 
 const geistSans = Geist({
@@ -27,7 +32,8 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {children}
+        {IS_GTM_ENABLED && <GoogleTagManager />}
+        <RootInnerLayout>{children}</RootInnerLayout>
       </body>
     </html>
   )
