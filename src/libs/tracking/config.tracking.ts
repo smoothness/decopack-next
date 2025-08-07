@@ -1,4 +1,3 @@
-// src/libs/tracking/config.tracking.ts
 'use client'
 
 // Check if GTM is enabled via environment variable

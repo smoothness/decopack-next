@@ -1,0 +1,29 @@
+{
+  "workbench.colorCustomizations": {
+    "activityBar.activeBackground": "#f01dbf",
+    "activityBar.background": "#f01dbf",
+    "activityBar.foreground": "#e7e7e7",
+    "activityBar.inactiveForeground": "#e7e7e799",
+    "activityBarBadge.background": "#465a06",
+    "activityBarBadge.foreground": "#e7e7e7",
+    "commandCenter.border": "#e7e7e799",
+    "sash.hoverBorder": "#f01dbf",
+    "statusBar.background": "#cc0ea0",
+    "statusBar.foreground": "#e7e7e7",
+    "statusBarItem.hoverBackground": "#f01dbf",
+    "statusBarItem.remoteBackground": "#cc0ea0",
+    "statusBarItem.remoteForeground": "#e7e7e7",
+    "titleBar.activeBackground": "#cc0ea0",
+    "titleBar.activeForeground": "#e7e7e7",
+    "titleBar.inactiveBackground": "#cc0ea099",
+    "titleBar.inactiveForeground": "#e7e7e799"
+  },
+  "peacock.color": "#cc0ea0",
+  "css.validate": false,
+  "scss.validate": false,
+  "less.validate": false,
+  "tailwindCSS.experimental.configFile": null,
+  "tailwindCSS.includeLanguages": {
+    "css": "css"
+  }
+}

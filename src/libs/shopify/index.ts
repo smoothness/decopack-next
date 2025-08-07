@@ -2,7 +2,7 @@ import { Menu, ShopifyMenuOperation } from '@/libs/shopify/types'
 import { getMenuQuery } from '@/libs/shopify/queries/menu'
 import { TAGS } from '@/libs/constants'
 import { isShopifyError } from '@/libs/type-guards'
-import { ensureStartWith } from '@/libs/utils'
+import { ensureStartsWith } from '@/libs/utils'
 
 type ExtractVariables<T> = T extends { variables: object }
   ? T['variables']
@@ -19,7 +19,7 @@ if (!process.env.SHOPIFY_STOREFRONT_ACCESS_TOKEN) {
   throw new Error('SHOPIFY_STOREFRONT_ACCESS_TOKEN environment variable is not defined');
 }
 
-const domain = ensureStartWith(process.env.SHOPIFY_STORE_DOMAIN, 'https://');
+const domain = ensureStartsWith(process.env.SHOPIFY_STORE_DOMAIN, 'https://');
 const api_version = process.env.SHOPIFY_API_VERSION;
 const endpoint = `${domain}/api/${api_version}/graphql.json`;
 const key = process.env.SHOPIFY_STOREFRONT_ACCESS_TOKEN;
@@ -83,14 +83,15 @@ export async function getMenu(handle: string): Promise<Menu[]> {
     tags: [TAGS.collections],
     variables: { handle },
   })
+  console.log('%c res:', 'color:black; background:magenta;', res);
 
   return (
     res.body?.data?.menu?.items.map((item: { title: string; url: string }) => ({
       title: item.title,
       path: item.url
         .replace(domain, '')
-        .replace('/collections', '/search')
-        .replace('pages', ''),
+        // .replace('/collections', '/search')
+        .replace('pages/', ''),
     })) || []
     // })) ?? [];
   )

@@ -1,5 +1,5 @@
 import type {Metadata} from 'next'
-import {Geist, Geist_Mono} from 'next/font/google'
+import {Mohave} from 'next/font/google'
 
 import {GoogleTagManager} from '@/libs/tracking/GoogleTagManager'
 import {IS_GTM_ENABLED} from '@/libs/tracking/config.tracking'
@@ -7,15 +7,17 @@ import {RootInnerLayout} from '@/components/layout/RootInnerLayout'
 
 import './globals.css'
 
-const geistSans = Geist({
-  variable: '--font-geist-sans',
+const mohave = Mohave({
   subsets: ['latin'],
+  weight: ['300', '400', '500', '600', '700'],
+  variable: '--font-mohave',
 })
 
-const geistMono = Geist_Mono({
-  variable: '--font-geist-mono',
-  subsets: ['latin'],
-})
+// const overpassMono = Overpass_Mono({
+//   subsets: ['latin'],
+//   weight: ['300', '400', '500', '600', '700'],
+//   variable: '--font-overpass-mono',
+// })
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -29,9 +31,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+      <body className={`${mohave.className} antialiased`}>
         {IS_GTM_ENABLED && <GoogleTagManager />}
         <RootInnerLayout>{children}</RootInnerLayout>
       </body>

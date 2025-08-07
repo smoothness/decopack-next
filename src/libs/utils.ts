@@ -5,7 +5,7 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-export function ensureStartWith(stringToCheck: string, prefix: string): string {
+export function ensureStartsWith(stringToCheck: string, prefix: string): string {
   return stringToCheck.startsWith(prefix)
     ? stringToCheck
     : `${prefix}${stringToCheck}`
