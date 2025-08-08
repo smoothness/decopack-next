@@ -8,21 +8,25 @@ type ExtractVariables<T> = T extends { variables: object }
   ? T['variables']
   : never
 
-// Check if environment variables are defined
-if (!process.env.SHOPIFY_STORE_DOMAIN) {
-  throw new Error('SHOPIFY_STORE_DOMAIN environment variable is not defined');
-}
-if (!process.env.SHOPIFY_API_VERSION) {
-  throw new Error('SHOPIFY_API_VERSION environment variable is not defined');
-}
-if (!process.env.SHOPIFY_STOREFRONT_ACCESS_TOKEN) {
-  throw new Error('SHOPIFY_STOREFRONT_ACCESS_TOKEN environment variable is not defined');
-}
+// Validate environment variables and get configuration
+function getShopifyConfig() {
+  if (!process.env.SHOPIFY_STORE_DOMAIN) {
+    throw new Error('SHOPIFY_STORE_DOMAIN environment variable is not defined');
+  }
+  if (!process.env.SHOPIFY_API_VERSION) {
+    throw new Error('SHOPIFY_API_VERSION environment variable is not defined');
+  }
+  if (!process.env.SHOPIFY_STOREFRONT_ACCESS_TOKEN) {
+    throw new Error('SHOPIFY_STOREFRONT_ACCESS_TOKEN environment variable is not defined');
+  }
 
-const domain = ensureStartsWith(process.env.SHOPIFY_STORE_DOMAIN, 'https://');
-const api_version = process.env.SHOPIFY_API_VERSION;
-const endpoint = `${domain}/api/${api_version}/graphql.json`;
-const key = process.env.SHOPIFY_STOREFRONT_ACCESS_TOKEN;
+  const domain = ensureStartsWith(process.env.SHOPIFY_STORE_DOMAIN, 'https://');
+  const api_version = process.env.SHOPIFY_API_VERSION;
+  const endpoint = `${domain}/api/${api_version}/graphql.json`;
+  const key = process.env.SHOPIFY_STOREFRONT_ACCESS_TOKEN;
+
+  return { domain, api_version, endpoint, key };
+}
 
 export async function shopifyFetch<T>({
   cache = 'force-cache',
@@ -37,6 +41,8 @@ export async function shopifyFetch<T>({
   tags?: string[]
   variables?: ExtractVariables<T>
 }): Promise<{ status: number; body: T } | never> {
+  const { endpoint, key } = getShopifyConfig();
+
   try {
     const result = await fetch(endpoint, {
       method: 'POST',
@@ -78,12 +84,13 @@ export async function shopifyFetch<T>({
 }
 
 export async function getMenu(handle: string): Promise<Menu[]> {
+  const { domain } = getShopifyConfig();
+
   const res = await shopifyFetch<ShopifyMenuOperation>({
     query: getMenuQuery,
     tags: [TAGS.collections],
     variables: { handle },
   })
-  console.log('%c res:', 'color:black; background:magenta;', res);
 
   return (
     res.body?.data?.menu?.items.map((item: { title: string; url: string }) => ({

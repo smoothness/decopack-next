@@ -1,18 +1,31 @@
 'use client'
 
-import {ReactNode} from 'react'
+import {ReactNode, Suspense} from 'react'
 import CookieConsent from 'react-cookie-consent'
 import {motion} from 'framer-motion'
 
 import {trackingConfig} from '@/libs/tracking/config.tracking'
 import {grantConsentForEverything} from '@/libs/tracking/utils.tracking'
+import {Menu} from '@/libs/shopify/types'
 
+import Navbar from '@/components/layout/navbar/Navbar'
 // TODO: refactor to use Anime.js instead of Framer Motion
 
-export function RootInnerLayout({children}: {children: ReactNode}) {
+export function RootInnerLayout({
+  children,
+  menuPromise,
+}: {
+  children: ReactNode
+  menuPromise: Promise<Menu[]>
+}) {
   return (
     <>
-      <main className="relative h-full w-full">{children}</main>
+      <main className="relative h-full w-full">
+        <Suspense fallback={<div className="h-20 w-full">Loading...</div>}>
+          <Navbar menuPromise={menuPromise} />
+        </Suspense>
+        {children}
+      </main>
       <motion.div
         initial={{y: '100vh', opacity: 0}}
         animate={{y: 0, opacity: 1}}

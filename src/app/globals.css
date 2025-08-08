@@ -6,6 +6,7 @@
 @layer base {
   body {
     font-family: var(--font-sans);
+    color: var(--color-gray-600);
   }
   h1,
   h2,
@@ -42,7 +43,12 @@
 }
 
 @theme {
+  /* Base colors */
   --color-white: #fff;
+  --color-black: #000;
+
+  /* Gray scale - these will generate bg-gray-100, text-gray-200, etc. */
+  --color-gray-50: #f2f2f2;
   --color-gray-100: #d2d2d2;
   --color-gray-200: #a5a5a5;
   --color-gray-300: #797979;
@@ -50,7 +56,8 @@
   --color-gray-500: #393939;
   --color-gray-600: #262626;
   --color-gray-700: #131313;
-  --color-black: #000;
+
+  /* Primary color scale - these will generate bg-primary-100, text-primary-500, etc. */
   --color-primary-100: #e8d5fe;
   --color-primary-200: #d1acfd;
   --color-primary-300: #b982fc;
@@ -58,6 +65,15 @@
   --color-primary-500: #7a43bc;
   --color-primary-600: #512d7e;
   --color-primary-700: #29163f;
+
+  /* Origin UI color mappings */
+  --color-accent: var(--color-primary-500);
+  --color-accent-foreground: red;
+  --color-muted-foreground: var(--color-gray-200);
+
+  /* Typography */
+  --font-mohave: 'Mohave', sans-serif;
+  --font-overpass-mono: 'Overpass Mono', monospace;
   --font-xs: 0.75rem;
   --font-sm: 0.875rem;
   --font-md: 1rem;

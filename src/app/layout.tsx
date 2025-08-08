@@ -1,11 +1,15 @@
 import type {Metadata} from 'next'
 import {Mohave} from 'next/font/google'
 
+// Import env validation to ensure environment variables are validated early
+import '../../env'
+
 import {GoogleTagManager} from '@/libs/tracking/GoogleTagManager'
 import {IS_GTM_ENABLED} from '@/libs/tracking/config.tracking'
 import {RootInnerLayout} from '@/components/layout/RootInnerLayout'
+import {getMenu} from '@/libs/shopify'
 
-import './globals.css'
+import '@/app/globals.css'
 
 const mohave = Mohave({
   subsets: ['latin'],
@@ -29,11 +33,13 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode
 }>) {
+  const menuPromise = getMenu('main-menu')
+
   return (
     <html lang="en">
       <body className={`${mohave.className} antialiased`}>
         {IS_GTM_ENABLED && <GoogleTagManager />}
-        <RootInnerLayout>{children}</RootInnerLayout>
+        <RootInnerLayout menuPromise={menuPromise}>{children}</RootInnerLayout>
       </body>
     </html>
   )
