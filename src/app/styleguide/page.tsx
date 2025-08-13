@@ -1,6 +1,6 @@
 export default function StyleGuide() {
   return (
-    <div className="m-auto max-w-[1440px]">
+    <div className="m-auto max-w-[1440px] px-5 py-20">
       <h1 className="mb-8 text-3xl">Hello world!</h1>
 
       {/* Test your custom colors */}

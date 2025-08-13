@@ -1,3 +1,4 @@
+import { ReadonlyURLSearchParams } from 'next/navigation'
 import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
 
@@ -9,4 +10,11 @@ export function ensureStartsWith(stringToCheck: string, prefix: string): string 
   return stringToCheck.startsWith(prefix)
     ? stringToCheck
     : `${prefix}${stringToCheck}`
+}
+
+export function createUrl(pathname: string, params: URLSearchParams | ReadonlyURLSearchParams): string {
+  const paramString = params.toString()
+  const queryString = `${paramString.length ? '?' + paramString : ''}${paramString}`
+
+  return `${pathname}${queryString}`
 }

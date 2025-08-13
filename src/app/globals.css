@@ -14,31 +14,35 @@
   h4,
   h5,
   h6 {
+    color: var(--color-gray-700);
     font-family: var(--font-sans);
+    font-weight: 500;
   }
   h1 {
-    font-size: var(--font-5xl);
+    text-size: var(--text-5xl);
   }
   h2 {
-    font-size: var(--font-4xl);
+    text-size: var(--text-4xl);
   }
   h3 {
-    font-size: var(--font-3xl);
+    text-size: var(--text-3xl);
   }
   h4 {
-    font-size: var(--font-2xl);
+    text-size: var(--text-2xl);
   }
   h5 {
-    font-size: var(--font-xl);
+    text-size: var(--text-xl);
   }
   h6 {
-    font-size: var(--font-lg);
+    text-size: var(--text-lg);
   }
   p {
-    font-size: var(--font-md);
+    text-size: var(--text-md);
+    text-weight: 400;
   }
   a {
-    font-size: var(--font-md);
+    text-size: var(--text-md);
+    text-weight: 400;
   }
 }
 
@@ -68,23 +72,23 @@
 
   /* Origin UI color mappings */
   --color-accent: var(--color-primary-500);
-  --color-accent-foreground: red;
+  --color-accent-foreground: var(--color-white);
   --color-muted-foreground: var(--color-gray-200);
 
   /* Typography */
-  --font-mohave: 'Mohave', sans-serif;
-  --font-overpass-mono: 'Overpass Mono', monospace;
-  --font-xs: 0.75rem;
-  --font-sm: 0.875rem;
-  --font-md: 1rem;
-  --font-mmd: 1.125rem;
-  --font-lg: 1.25rem;
-  --font-llg: 1.375rem;
-  --font-xl: 1.5rem;
-  --font-2xl: 2rem;
-  --font-3xl: 2.5rem;
-  --font-4xl: 3rem;
-  --font-5xl: 3.75rem;
+  --font-sans: 'Mohave', sans-serif;
+  --font-mono: 'Overpass Mono', monospace;
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-md: 1rem;
+  --text-mmd: 1.125rem;
+  --text-lg: 1.25rem;
+  --text-llg: 1.375rem;
+  --text-xl: 1.5rem;
+  --text-2xl: 2rem;
+  --text-3xl: 2.5rem;
+  --text-4xl: 3rem;
+  --text-5xl: 3.75rem;
 }
 
 @layer components {
@@ -97,13 +101,13 @@
 }
 
 @theme inline {
-  --font-body-xs: var(--font-xs);
-  --font-body-sm: var(--font-sm);
-  --font-body-md: var(--font-md);
-  --font-body-lg: var(--font-lg);
-  --font-subtitle-sm: var(--font-md);
-  --font-subtitle-md: var(--font-mmd);
-  --font-subtitle-lg: var(--font-llg);
-  --font-sans: var(--font-mohave);
-  --font-mono: var(--font-overpass-mono);
+  --text-body-xs: var(--text-xs);
+  --text-body-sm: var(--text-sm);
+  --text-body-md: var(--text-md);
+  --text-body-lg: var(--text-lg);
+  --text-subtitle-sm: var(--text-md);
+  --text-subtitle-md: var(--text-mmd);
+  --text-subtitle-lg: var(--text-llg);
+  --text-sans: var(--font-mohave);
+  --text-mono: var(--font-overpass-mono);
 }

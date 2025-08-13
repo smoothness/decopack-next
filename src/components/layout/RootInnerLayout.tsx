@@ -9,23 +9,24 @@ import {grantConsentForEverything} from '@/libs/tracking/utils.tracking'
 import {Menu} from '@/libs/shopify/types'
 
 import Navbar from '@/components/layout/navbar/Navbar'
+import Footer from '@/components/layout/footer/Footer'
 // TODO: refactor to use Anime.js instead of Framer Motion
 
 export function RootInnerLayout({
   children,
   menuPromise,
 }: {
-  children: ReactNode
+  children: React.ReactNode
   menuPromise: Promise<Menu[]>
 }) {
   return (
-    <>
-      <main className="relative h-full w-full">
-        <Suspense fallback={<div className="h-20 w-full">Loading...</div>}>
-          <Navbar menuPromise={menuPromise} />
-        </Suspense>
-        {children}
-      </main>
+    <div className="flex min-h-screen flex-col">
+      <Suspense fallback={<div className="h-20 w-full">Loading...</div>}>
+        <Navbar menuPromise={menuPromise} />
+      </Suspense>
+      <main className="relative w-full flex-1">{children}</main>
+      <Footer />
+      {/* Cookie Consent Banner */}
       <motion.div
         initial={{y: '100vh', opacity: 0}}
         animate={{y: 0, opacity: 1}}
@@ -44,6 +45,6 @@ export function RootInnerLayout({
           <p>This website uses cookies to enhance the user experience.</p>
         </CookieConsent>
       </motion.div>
-    </>
+    </div>
   )
 }

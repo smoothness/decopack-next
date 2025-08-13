@@ -1,6 +1,12 @@
 export type Menu = {
   title: string
   path: string
+  submenu?: SubMenu[]
+}
+
+export type SubMenu = {
+  title: string
+  path: string
 }
 
 export type ShopifyMenuOperation = {

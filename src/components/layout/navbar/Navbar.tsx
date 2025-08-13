@@ -1,7 +1,6 @@
 // import Image from 'next/image'
 import {use, useState, useRef, useEffect} from 'react'
 import Link from 'next/link'
-import {BookOpenIcon, InfoIcon, LifeBuoyIcon} from 'lucide-react'
 import {
   CaretDownIcon,
   MagnifyingGlassIcon,
@@ -10,7 +9,7 @@ import {
 } from '@phosphor-icons/react'
 
 import {cn} from '@/libs/utils'
-import {Menu} from '@/libs/shopify/types'
+import {Menu, SubMenu} from '@/libs/shopify/types'
 
 import {Button} from '@/components/ui/button'
 import {
@@ -23,63 +22,17 @@ import {
 } from '@/components/ui/navigation-menu'
 import {Popover, PopoverContent, PopoverTrigger} from '@/components/ui/popover'
 import DecopackLogo from '@/components/svgs/DecopackLogo'
+import Search from '@/components/layout/navbar/Search'
 
 const linkClasses = cn(
-  `data-[active]:focus:bg-gray-100 data-[active]:hover:text-accent data-[active]:bg-gray-100 data-[active]:text-primary-700 hover:text-accent focus:bg-gray-100 focus:text-primary-700 focus-visible:ring-ring/50 [&_svg:not([class*='text-'])]:text-muted-foreground flex flex-col gap-1 rounded-sm p-2 text-sm transition-all outline-none focus-visible:ring-[3px] focus-visible:outline-1 [&_svg:not([class*='size-'])]:size-4`,
+  `data-[active]:focus:bg-gray-100 data-[active]:hover:text-accent data-[active]:bg-gray-100 data-[active]:text-primary-700 hover:text-accent focus:bg-gray-100 focus:text-primary-700 focus-visible:ring-ring/50 [&_svg:not([class*='text-'])]:text-muted-foreground flex flex-col gap-1 rounded-sm p-2 text-sm transition-all outline-none focus-visible:ring-[3px] focus-visible:outline-1 [&_svg:not([class*='size-'])]:size-4 relative after:content-[''] after:absolute after:left-0 after:bottom-0 after:h-[2px] after:w-0 after:bg-accent after:transition-all after:duration-300 after:ease-in-out hover:after:w-full focus:after:w-full`,
 )
-
-// Navigation links array to be used in both desktop and mobile menus
-const navigationLinks = [
-  {href: '#', label: 'Home'},
-  {
-    label: 'Features',
-    submenu: true,
-    type: 'description',
-    items: [
-      {
-        href: '#',
-        label: 'Components',
-        description: 'Browse all components in the library.',
-      },
-      {
-        href: '#',
-        label: 'Documentation',
-        description: 'Learn how to use the library.',
-      },
-      {
-        href: '#',
-        label: 'Templates',
-        description: 'Pre-built layouts for common use cases.',
-      },
-    ],
-  },
-  {
-    label: 'Pricing',
-    submenu: true,
-    type: 'simple',
-    items: [
-      {href: '#', label: 'Product A'},
-      {href: '#', label: 'Product B'},
-      {href: '#', label: 'Product C'},
-      {href: '#', label: 'Product D'},
-    ],
-  },
-  {
-    label: 'About',
-    submenu: true,
-    type: 'icon',
-    items: [
-      {href: '#', label: 'Getting Started', icon: 'BookOpenIcon'},
-      {href: '#', label: 'Tutorials', icon: 'LifeBuoyIcon'},
-      {href: '#', label: 'About Us', icon: 'InfoIcon'},
-    ],
-  },
-]
 
 export default function Navbar({menuPromise}: {menuPromise: Promise<Menu[]>}) {
   const menu = use(menuPromise)
   const [activeDropdown, setActiveDropdown] = useState<number | null>(null)
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
+  const [isSearchOpen, setIsSearchOpen] = useState(false)
   const dropdownRef = useRef<HTMLDivElement>(null)
   const timeoutRef = useRef<NodeJS.Timeout | null>(null)
 
@@ -129,10 +82,25 @@ export default function Navbar({menuPromise}: {menuPromise: Promise<Menu[]>}) {
     }
   }
 
+  function handleSearchToggle() {
+    if (isSearchOpen) {
+      setIsDropdownOpen(false)
+      setIsSearchOpen(false)
+      setActiveDropdown(null)
+      return
+    }
+    setIsDropdownOpen(true)
+    setIsSearchOpen(true)
+    setActiveDropdown(null)
+  }
+
   console.log('%c menu:', 'color:black; background:magenta;', menu)
+
   return (
-    <header className="relative border-b border-gray-50 px-4 md:px-6">
-      <div className="m-auto flex h-16 max-w-[1440px] items-center justify-between gap-4">
+    <header
+      className={`relative ${!activeDropdown && 'border-b border-gray-50 shadow-xs'}`}
+    >
+      <div className="m-auto flex h-16 max-w-[1440px] items-center justify-between gap-4 px-5">
         {/* Left side */}
         <div className="flex items-center">
           <Link href="/">
@@ -146,12 +114,12 @@ export default function Navbar({menuPromise}: {menuPromise: Promise<Menu[]>}) {
             {/* Navigation menu */}
             <NavigationMenu viewport={false} className="max-md:hidden">
               <NavigationMenuList className="gap-2">
-                {navigationLinks.map((link, index) => (
-                  <NavigationMenuItem key={index}>
-                    {link.submenu ? (
+                {menu.map((item: Menu, index: number) => (
+                  <NavigationMenuItem key={item.title}>
+                    {item.submenu ? (
                       <>
                         <Link
-                          href={link.href || '#'}
+                          href={item.path || '#'}
                           className={cn(
                             linkClasses,
                             `flex flex-row items-center`,
@@ -163,7 +131,7 @@ export default function Navbar({menuPromise}: {menuPromise: Promise<Menu[]>}) {
                             handleClick(index, true)
                           }}
                         >
-                          <span>{link.label}</span>
+                          <span>{item.title}</span>
                           <CaretDownIcon
                             size={16}
                             color="#262626"
@@ -172,8 +140,8 @@ export default function Navbar({menuPromise}: {menuPromise: Promise<Menu[]>}) {
                         </Link>
                       </>
                     ) : (
-                      <Link href={link.href || '#'} className={linkClasses}>
-                        {link.label}
+                      <Link href={item.path || '#'} className={linkClasses}>
+                        {item.title}
                       </Link>
                     )}
                   </NavigationMenuItem>
@@ -184,9 +152,15 @@ export default function Navbar({menuPromise}: {menuPromise: Promise<Menu[]>}) {
         </div>
         {/* Right side */}
         <div className="flex items-center gap-4">
-          <Link href={'#'}>
+          <Button
+            onClick={(e) => {
+              e.preventDefault()
+              handleSearchToggle()
+            }}
+            className="pointer-events-auto cursor-pointer shadow-none"
+          >
             <MagnifyingGlassIcon size={20} color="#262626" weight="regular" />
-          </Link>
+          </Button>
           <Link href={'#'}>
             <UserIcon size={20} color="#262626" weight="regular" />
           </Link>
@@ -232,42 +206,26 @@ export default function Navbar({menuPromise}: {menuPromise: Promise<Menu[]>}) {
           <PopoverContent align="start" className="w-64 p-1 md:hidden">
             <NavigationMenu className="max-w-none *:w-full">
               <NavigationMenuList className="flex-col items-start gap-0 md:gap-2">
-                {navigationLinks.map((link, index) => (
-                  <NavigationMenuItem key={index} className="w-full">
-                    {link.submenu ? (
+                {menu.map((item: Menu) => (
+                  <NavigationMenuItem key={item.title} className="w-full">
+                    {item.submenu ? (
                       <>
-                        <div>{link.label}</div>
+                        <div>{item.title}</div>
                         <ul>
-                          {link.items.map((item, itemIndex) => (
-                            <li key={itemIndex}>
-                              <Link href={item.href} className={linkClasses}>
-                                {item.label}
+                          {(item.submenu ?? []).map((subItem: SubMenu) => (
+                            <li key={subItem.title}>
+                              <Link href={subItem.path} className={linkClasses}>
+                                {subItem.title}
                               </Link>
                             </li>
                           ))}
                         </ul>
                       </>
                     ) : (
-                      <Link href={link.href || '#'} className={linkClasses}>
-                        {link.label}
+                      <Link href={item.path || '#'} className={linkClasses}>
+                        {item.title}
                       </Link>
                     )}
-                    {/* Add separator between different types of items */}
-                    {index < navigationLinks.length - 1 &&
-                      // Show separator if:
-                      // 1. One is submenu and one is simple link OR
-                      // 2. Both are submenus but with different types
-                      ((!link.submenu && navigationLinks[index + 1].submenu) ||
-                        (link.submenu && !navigationLinks[index + 1].submenu) ||
-                        (link.submenu &&
-                          navigationLinks[index + 1].submenu &&
-                          link.type !== navigationLinks[index + 1].type)) && (
-                        <div
-                          role="separator"
-                          aria-orientation="horizontal"
-                          className="bg-border -mx-1 my-1 h-px w-full"
-                        />
-                      )}
                   </NavigationMenuItem>
                 ))}
               </NavigationMenuList>
@@ -277,103 +235,48 @@ export default function Navbar({menuPromise}: {menuPromise: Promise<Menu[]>}) {
       </div>
 
       {/* Full-width dropdown menu */}
-      {activeDropdown !== null && navigationLinks[activeDropdown]?.submenu && (
-        <div
-          className={`absolute top-full right-0 left-0 z-50 origin-top transform border-b border-gray-100 bg-white shadow-lg transition-all duration-300 ease-in-out ${
-            isDropdownOpen
-              ? 'translate-y-0 scale-y-100 opacity-100'
-              : 'pointer-events-none -translate-y-2 scale-y-95 opacity-0'
-          }`}
-          onMouseEnter={() => handleMouseEnter(activeDropdown, true)}
-          onMouseLeave={handleMouseLeave}
-        >
-          <div className="mx-auto max-w-[1440px] px-4 py-8 md:px-6">
-            {navigationLinks[activeDropdown]?.type === 'description' && (
-              <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
-                {navigationLinks[activeDropdown]?.items.map(
-                  (item, itemIndex) => (
+      {activeDropdown !== null &&
+        (menu[activeDropdown]?.submenu?.length ?? 0) > 0 && (
+          <div
+            className={`absolute top-full right-0 left-0 z-50 origin-top transform border-b border-gray-50 bg-white shadow-xs transition-all duration-300 ease-in-out ${
+              isDropdownOpen
+                ? 'translate-y-0 scale-y-100 opacity-100'
+                : 'pointer-events-none -translate-y-2 scale-y-95 opacity-0'
+            }`}
+            onMouseEnter={() => handleMouseEnter(activeDropdown, true)}
+            onMouseLeave={handleMouseLeave}
+          >
+            <div className="mx-auto max-w-[1440px] px-5 py-8">
+              {menu[activeDropdown] && (
+                <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
+                  {menu[activeDropdown]?.submenu?.map((item: SubMenu) => (
                     <Link
-                      key={itemIndex}
-                      href={item.href}
-                      className="block rounded-lg p-4 transition-colors hover:bg-gray-50"
-                    >
-                      <div className="mb-1 font-medium text-gray-900">
-                        {item.label}
-                      </div>
-                      {'description' in item && (
-                        <p className="line-clamp-2 text-sm text-gray-600">
-                          {item.description}
-                        </p>
-                      )}
-                    </Link>
-                  ),
-                )}
-              </div>
-            )}
-
-            {navigationLinks[activeDropdown]?.type === 'icon' && (
-              <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-                {navigationLinks[activeDropdown]?.items.map(
-                  (item, itemIndex) => (
-                    <Link
-                      key={itemIndex}
-                      href={item.href}
-                      className="flex items-center rounded-lg p-4 transition-colors hover:bg-gray-50"
-                    >
-                      {'icon' in item && (
-                        <>
-                          {item.icon === 'BookOpenIcon' && (
-                            <BookOpenIcon
-                              size={20}
-                              className="mr-3 text-gray-600"
-                              aria-hidden="true"
-                            />
-                          )}
-                          {item.icon === 'LifeBuoyIcon' && (
-                            <LifeBuoyIcon
-                              size={20}
-                              className="mr-3 text-gray-600"
-                              aria-hidden="true"
-                            />
-                          )}
-                          {item.icon === 'InfoIcon' && (
-                            <InfoIcon
-                              size={20}
-                              className="mr-3 text-gray-600"
-                              aria-hidden="true"
-                            />
-                          )}
-                        </>
-                      )}
-                      <span className="font-medium text-gray-900">
-                        {item.label}
-                      </span>
-                    </Link>
-                  ),
-                )}
-              </div>
-            )}
-
-            {navigationLinks[activeDropdown]?.type === 'simple' && (
-              <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
-                {navigationLinks[activeDropdown]?.items.map(
-                  (item, itemIndex) => (
-                    <Link
-                      key={itemIndex}
-                      href={item.href}
+                      key={item.title}
+                      href={item.path || '#'}
                       className="block rounded-lg p-4 text-center transition-colors hover:bg-gray-50"
                     >
                       <span className="font-medium text-gray-900">
-                        {item.label}
+                        {item.title}
                       </span>
                     </Link>
-                  ),
-                )}
-              </div>
-            )}
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
+        )}
+      {/* Full-width search bar*/}
+      <div
+        className={`absolute top-full right-0 left-0 z-50 origin-top transform border-b border-gray-50 bg-white shadow-xs transition-all duration-300 ease-in-out ${
+          isSearchOpen
+            ? 'translate-y-0 scale-y-100 opacity-100'
+            : 'pointer-events-none -translate-y-2 scale-y-95 opacity-0'
+        }`}
+      >
+        <div className="mx-auto max-w-[1440px] px-5 py-8">
+          <Search />
         </div>
-      )}
+      </div>
     </header>
   )
 }
