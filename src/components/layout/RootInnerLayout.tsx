@@ -1,6 +1,6 @@
 'use client'
 
-import {ReactNode, Suspense} from 'react'
+import {Suspense} from 'react'
 import CookieConsent from 'react-cookie-consent'
 import {motion} from 'framer-motion'
 
@@ -15,17 +15,27 @@ import Footer from '@/components/layout/footer/Footer'
 export function RootInnerLayout({
   children,
   menuPromise,
+  aboutMenuPromise,
 }: {
   children: React.ReactNode
   menuPromise: Promise<Menu[]>
+  aboutMenuPromise: Promise<Menu[]>
 }) {
   return (
     <div className="flex min-h-screen flex-col">
-      <Suspense fallback={<div className="h-20 w-full">Loading...</div>}>
+      <Suspense
+        fallback={<div className="h-20 w-full">Cargado menú principal...</div>}
+      >
         <Navbar menuPromise={menuPromise} />
       </Suspense>
-      <main className="relative w-full flex-1">{children}</main>
-      <Footer />
+      <main className="relative w-full flex-1 py-40">{children}</main>
+      <Suspense
+        fallback={
+          <div className="h-20 w-full">Cargado menú sobre nosotros...</div>
+        }
+      >
+        <Footer aboutMenuPromise={aboutMenuPromise} />
+      </Suspense>
       {/* Cookie Consent Banner */}
       <motion.div
         initial={{y: '100vh', opacity: 0}}

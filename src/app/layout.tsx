@@ -34,12 +34,18 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   const menuPromise = getMenu('main-menu')
+  const aboutMenuPromise = getMenu('footer-about')
 
   return (
     <html lang="en">
       <body className={`${mohave.className} antialiased`}>
         {IS_GTM_ENABLED && <GoogleTagManager />}
-        <RootInnerLayout menuPromise={menuPromise}>{children}</RootInnerLayout>
+        <RootInnerLayout
+          menuPromise={menuPromise}
+          aboutMenuPromise={aboutMenuPromise}
+        >
+          {children}
+        </RootInnerLayout>
       </body>
     </html>
   )

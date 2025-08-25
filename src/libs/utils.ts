@@ -14,7 +14,7 @@ export function ensureStartsWith(stringToCheck: string, prefix: string): string 
 
 export function createUrl(pathname: string, params: URLSearchParams | ReadonlyURLSearchParams): string {
   const paramString = params.toString()
-  const queryString = `${paramString.length ? '?' + paramString : ''}${paramString}`
+  const queryString = `${paramString.length ? '?' + paramString : ''}`
 
   return `${pathname}${queryString}`
 }

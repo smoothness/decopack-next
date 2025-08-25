@@ -94,7 +94,7 @@ export default function Navbar({menuPromise}: {menuPromise: Promise<Menu[]>}) {
     setActiveDropdown(null)
   }
 
-  console.log('%c menu:', 'color:black; background:magenta;', menu)
+  // console.log('%c menu:', 'color:black; background:magenta;', menu)
 
   return (
     <header
@@ -112,12 +112,12 @@ export default function Navbar({menuPromise}: {menuPromise: Promise<Menu[]>}) {
           {/* Main nav */}
           <div className="flex items-center gap-6">
             {/* Navigation menu */}
-            <NavigationMenu viewport={false} className="max-md:hidden">
-              <NavigationMenuList className="gap-2">
-                {menu.map((item: Menu, index: number) => (
-                  <NavigationMenuItem key={item.title}>
-                    {item.submenu ? (
-                      <>
+            {menu.length > 0 ? (
+              <NavigationMenu viewport={false} className="max-md:hidden">
+                <NavigationMenuList className="gap-2">
+                  {menu.map((item: Menu, index: number) => (
+                    <NavigationMenuItem key={item.title}>
+                      {item.submenu ? (
                         <Link
                           href={item.path || '#'}
                           className={cn(
@@ -138,16 +138,16 @@ export default function Navbar({menuPromise}: {menuPromise: Promise<Menu[]>}) {
                             weight="thin"
                           />
                         </Link>
-                      </>
-                    ) : (
-                      <Link href={item.path || '#'} className={linkClasses}>
-                        {item.title}
-                      </Link>
-                    )}
-                  </NavigationMenuItem>
-                ))}
-              </NavigationMenuList>
-            </NavigationMenu>
+                      ) : (
+                        <Link href={item.path || '#'} className={linkClasses}>
+                          {item.title}
+                        </Link>
+                      )}
+                    </NavigationMenuItem>
+                  ))}
+                </NavigationMenuList>
+              </NavigationMenu>
+            ) : null}
           </div>
         </div>
         {/* Right side */}

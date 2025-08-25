@@ -1,12 +1,17 @@
+import {use} from 'react'
 import Link from 'next/link'
 import {InstagramLogoIcon, FacebookLogoIcon} from '@phosphor-icons/react'
 
 import DecopackLogo from '@/components/svgs/DecopackLogo'
+// import {getMenu} from '@/libs/shopify'
+import {Menu} from '@/libs/shopify/types'
 
-function Footer() {
+function Footer({aboutMenuPromise}: {aboutMenuPromise: Promise<Menu[]>}) {
+  const aboutMenu = use(aboutMenuPromise)
+
   return (
     <footer
-      className="border-t border-neutral-100 bg-neutral-50"
+      className="border-t border-neutral-100 bg-neutral-50 pb-8"
       role="contentinfo"
       aria-label="Site footer"
     >
@@ -18,16 +23,20 @@ function Footer() {
             <div>
               <h3 className="text-subtitle-sm mb-4">Sobre Nosotros</h3>
               <nav aria-label="Footer main navigation">
-                <ul className="space-y-3">
-                  <li className="mb-0">
-                    <Link
-                      href="/about"
-                      className="hover:text-accent focus:text-accent text-sm font-light transition-colors duration-200 focus:underline focus:outline-none"
-                    >
-                      About Us
-                    </Link>
-                  </li>
-                </ul>
+                {aboutMenu.length > 0 ? (
+                  <ul className="space-y-3">
+                    {aboutMenu.map((item: Menu) => (
+                      <li key={item.title} className="mb-0">
+                        <Link
+                          href={item.path}
+                          className="hover:text-accent focus:text-accent text-sm font-light transition-colors duration-200 focus:underline focus:outline-none"
+                        >
+                          {item.title}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                ) : null}
               </nav>
             </div>
 

@@ -27,7 +27,8 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "src/libs/tracking/types.tracking.d.ts"
+    "src/libs/tracking/types.tracking.d.ts",
+    "next.config.js"
   ],
   "exclude": ["node_modules"]
 }

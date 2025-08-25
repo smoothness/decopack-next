@@ -1,7 +1,7 @@
 'use client'
 
 import {useId} from 'react'
-import {useRouter, useSearchParams} from 'next/navigation'
+import {useRouter, useSearchParams, usePathname} from 'next/navigation'
 import {ArrowRightIcon, MagnifyingGlassIcon} from '@phosphor-icons/react'
 
 import {createUrl} from '@/libs/utils'
@@ -12,6 +12,7 @@ import {Label} from '@/components/ui/label'
 export default function Search() {
   const router = useRouter()
   const searchParams = useSearchParams()
+  const pathname = usePathname()
   const id = useId()
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -27,7 +28,11 @@ export default function Search() {
       newParams.delete('q')
     }
 
-    router.push(createUrl('search/', newParams))
+    // Check if we're on a collection page and keep the search within that collection
+    const isCollectionPage = pathname.startsWith('/search/') && pathname !== '/search'
+    const redirectPath = isCollectionPage ? pathname : '/search'
+    
+    router.push(createUrl(redirectPath, newParams))
   }
 
   return (
