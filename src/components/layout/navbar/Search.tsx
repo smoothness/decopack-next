@@ -29,9 +29,10 @@ export default function Search() {
     }
 
     // Check if we're on a collection page and keep the search within that collection
-    const isCollectionPage = pathname.startsWith('/search/') && pathname !== '/search'
+    const isCollectionPage =
+      pathname.startsWith('/search/') && pathname !== '/search'
     const redirectPath = isCollectionPage ? pathname : '/search'
-    
+
     router.push(createUrl(redirectPath, newParams))
   }
 
