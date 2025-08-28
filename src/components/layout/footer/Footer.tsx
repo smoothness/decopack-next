@@ -3,8 +3,8 @@ import Link from 'next/link'
 import {InstagramLogoIcon, FacebookLogoIcon} from '@phosphor-icons/react'
 
 import DecopackLogo from '@/components/svgs/DecopackLogo'
-// import {getMenu} from '@/libs/shopify'
-import {Menu} from '@/libs/shopify/types'
+// import {getMenu} from '@/lib/shopify'
+import {Menu} from '@/lib/shopify/types'
 
 function Footer({aboutMenuPromise}: {aboutMenuPromise: Promise<Menu[]>}) {
   const aboutMenu = use(aboutMenuPromise)

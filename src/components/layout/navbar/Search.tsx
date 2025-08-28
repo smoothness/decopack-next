@@ -4,7 +4,7 @@ import {useId} from 'react'
 import {useRouter, useSearchParams, usePathname} from 'next/navigation'
 import {ArrowRightIcon, MagnifyingGlassIcon} from '@phosphor-icons/react'
 
-import {createUrl} from '@/libs/utils'
+import {createUrl} from '@/lib/utils'
 
 import {Input} from '@/components/ui/input'
 import {Label} from '@/components/ui/label'

@@ -1,8 +1,8 @@
 import Link from 'next/link'
 
-import {Grid} from '@/app/search/components/Grid'
-import {GridTileImage} from '@/app/search/components/GridTile'
-import {Product} from '@/libs/shopify/types'
+import {Grid} from '@/components/grid/Grid'
+import {GridTileImage} from '@/components/grid/GridTile'
+import {Product} from '@/lib/shopify/types'
 
 export function ProductGridItems({products}: {products: Product[]}) {
   return (

@@ -1,4 +1,4 @@
-export const imageFragment = `
+const imageFragment = `
   fragment image on Image {
     url
     altText
@@ -6,3 +6,5 @@ export const imageFragment = `
     height
   }
 `
+
+export default imageFragment

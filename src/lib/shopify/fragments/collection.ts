@@ -1,4 +1,4 @@
-import { seoFragment } from "@/libs/shopify/fragments/seo";
+import seoFragment from "@/lib/shopify/fragments/seo";
 
 export const collectionFragment = `
   fragment collection on Collection {

@@ -1,4 +1,4 @@
-import {sorting} from '@/libs/constants'
+import {sorting} from '@/lib/constants'
 import {FilterList} from '@/app/search/components/FilterList'
 import {Collections} from '@/app/search/components/Collections'
 

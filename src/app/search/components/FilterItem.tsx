@@ -2,8 +2,8 @@
 
 import {usePathname, useSearchParams} from 'next/navigation'
 import Link from 'next/link'
-import type {SortFilterItem} from '@/libs/constants'
-import {createUrl} from '@/libs/utils'
+import type {SortFilterItem} from '@/lib/constants'
+import {createUrl} from '@/lib/utils'
 import clsx from 'clsx'
 
 export type PathFilterItem = {

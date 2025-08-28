@@ -2,7 +2,7 @@
 
 import {useRouter, usePathname, useSearchParams} from 'next/navigation'
 import {XCircleIcon} from '@phosphor-icons/react'
-import {createUrl} from '@/libs/utils'
+import {createUrl} from '@/lib/utils'
 
 export function ResetSearchButton() {
   const router = useRouter()

@@ -1,4 +1,4 @@
-// src/libs/tracking/types.tracking.d.ts
+// src/lib/tracking/types.tracking.d.ts
 // Extend the global namespace to recognize GTM-related properties
 declare global {
   interface Window {

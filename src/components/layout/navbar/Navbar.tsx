@@ -8,8 +8,8 @@ import {
   ShoppingCartIcon,
 } from '@phosphor-icons/react'
 
-import {cn} from '@/libs/utils'
-import {Menu, SubMenu} from '@/libs/shopify/types'
+import {cn} from '@/lib/utils'
+import {Menu, SubMenu} from '@/lib/shopify/types'
 
 import {Button} from '@/components/ui/button'
 import {

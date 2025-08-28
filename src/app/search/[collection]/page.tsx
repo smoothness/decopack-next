@@ -1,7 +1,7 @@
-import {defaultSort, sorting} from '@/libs/constants'
-import {Grid} from '@/app/search/components/Grid'
+import {defaultSort, sorting} from '@/lib/constants'
+import {Grid} from '@/components/grid/Grid'
 import {ProductGridItems} from '@/app/search/components/ProductGridItems'
-import {getCollectionProducts} from '@/libs/shopify'
+import {getCollectionProducts} from '@/lib/shopify'
 import {ResetSearchButton} from '@/app/search/components/ResetSearchButton'
 
 export default async function CategoryPage({

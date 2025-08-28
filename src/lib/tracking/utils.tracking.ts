@@ -1,8 +1,8 @@
-// src/libs/tracking/utils.tracking.ts
+// src/lib/tracking/utils.tracking.ts
 'use client'
 
-import { IS_GTM_ENABLED, trackingConfig } from '@/libs/tracking/config.tracking'
-import type { Gtag, GtagEvent } from '@/libs/tracking/types.tracking'
+import { IS_GTM_ENABLED, trackingConfig } from '@/lib/tracking/config.tracking'
+import type { Gtag, GtagEvent } from '@/lib/tracking/types.tracking'
 
 function logGAWarning(message: string) {
   console.warn(`[Tracking] Warning: ${message}`)

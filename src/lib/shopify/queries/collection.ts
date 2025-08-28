@@ -1,5 +1,5 @@
-import { collectionFragment } from "@/libs/shopify/fragments/collection";
-import { productFragment } from "@/libs/shopify/fragments/products";
+import { collectionFragment } from "@/lib/shopify/fragments/collection";
+import { productFragment } from "@/lib/shopify/fragments/product";
 
 export const getCollectionsQuery = `
   query getCollections {

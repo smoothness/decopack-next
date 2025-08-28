@@ -1,6 +1,6 @@
-import {defaultSort, sorting} from '@/libs/constants'
-import {getProducts} from '@/libs/shopify'
-import {Grid} from '@/app/search/components/Grid'
+import {defaultSort, sorting} from '@/lib/constants'
+import {getProducts} from '@/lib/shopify'
+import {Grid} from '@/components/grid/Grid'
 import {ProductGridItems} from '@/app/search/components/ProductGridItems'
 
 export default async function SearchPage({

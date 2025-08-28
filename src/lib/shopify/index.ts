@@ -1,10 +1,12 @@
-import { Connection, Menu, ShopifyMenuOperation, ShopifyProduct, ShopifyProductsOperation, Image, Product, Collection, ShopifyCollectionsOperation, ShopifyCollection, ShopifyCollectionProductsOperation } from '@/libs/shopify/types'
-import { getMenuQuery } from '@/libs/shopify/queries/menu'
-import { HIDDEN_PRODUCT_TAG, TAGS } from '@/libs/constants'
-import { isShopifyError } from '@/libs/type-guards'
-import { ensureStartsWith } from '@/libs/utils'
-import { getProductsQuery } from '@/libs/shopify/queries/products'
-import { getCollectionProductsQuery, getCollectionsQuery } from '@/libs/shopify/queries/collection'
+import { Connection, Menu, ShopifyMenuOperation, ShopifyProduct, ShopifyProductsOperation, Image, Product, Collection, ShopifyCollectionsOperation, ShopifyCollection, ShopifyCollectionProductsOperation, ShopifyProductOperation, ShopifyAddToCartOperation, Cart, ShopifyCart, ShopifyProductRecommendationsOperation, ShopifyCartOperation } from '@/lib/shopify/types'
+import { getMenuQuery } from '@/lib/shopify/queries/menu'
+import { HIDDEN_PRODUCT_TAG, TAGS } from '@/lib/constants'
+import { isShopifyError } from '@/lib/type-guards'
+import { ensureStartsWith } from '@/lib/utils'
+import { getProductsQuery, getProductQuery, getProductRecommendationsQuery } from '@/lib/shopify/queries/product'
+import { getCollectionProductsQuery, getCollectionsQuery } from '@/lib/shopify/queries/collection'
+import { addToCartMutation } from '@/lib/shopify/mutations/cart'
+import { getCartQuery } from '@/lib/shopify/queries/cart'
 
 type ExtractVariables<T> = T extends { variables: object }
   ? T['variables']
@@ -250,7 +252,7 @@ export async function getCollectionProducts({
   // Client-side filtering if query is provided
   if (query && query.trim()) {
     const searchTerm = query.trim().toLowerCase()
-    products = products.filter(product => 
+    products = products.filter(product =>
       product.title.toLowerCase().includes(searchTerm) ||
       product.description.toLowerCase().includes(searchTerm) ||
       product.tags.some(tag => tag.toLowerCase().includes(searchTerm))
@@ -258,4 +260,77 @@ export async function getCollectionProducts({
   }
 
   return products;
+}
+
+export async function getProduct(handle: string): Promise<Product | undefined> {
+  const res = await shopifyFetch<ShopifyProductOperation>({
+    query: getProductQuery,
+    tags: [TAGS.products],
+    variables: { handle },
+  })
+
+  return reshapeProduct(res.body.data.product, false);
+}
+
+function reshapeCart(cart: ShopifyCart): Cart {
+  if (!cart.cost?.totalTaxAmount) {
+    cart.cost.totalTaxAmount = {
+      amount: "0.0",
+      currencyCode: "USD",
+    };
+  }
+
+  return {
+    ...cart,
+    lines: removeEdgesAndNodes(cart.lines),
+  };
+}
+
+export async function getCart(
+  cartId: string | undefined
+): Promise<Cart | undefined> {
+  if (!cartId) return undefined;
+
+  const res = await shopifyFetch<ShopifyCartOperation>({
+    query: getCartQuery,
+    variables: { cartId },
+    tags: [TAGS.cart],
+  });
+
+  // old carts becomes 'null' when you checkout
+  if (!res.body.data.cart) {
+    return undefined;
+  }
+
+  return reshapeCart(res.body.data.cart);
+}
+
+export async function addToCart(
+  cartId: string,
+  lines: { merchandiseId: string; quantity: number }[]
+): Promise<Cart> {
+  const res = await shopifyFetch<ShopifyAddToCartOperation>({
+    query: addToCartMutation,
+    variables: {
+      cartId,
+      lines,
+    },
+    cache: "no-cache",
+  });
+
+  return reshapeCart(res.body.data.cartLinesAdd.cart);
+}
+
+export async function getProductRecommendations(
+  productId: string
+): Promise<Product[]> {
+  const res = await shopifyFetch<ShopifyProductRecommendationsOperation>({
+    query: getProductRecommendationsQuery,
+    tags: [TAGS.products],
+    variables: {
+      productId,
+    },
+  });
+
+  return reshapeProducts(res.body.data.productRecommendations);
 }

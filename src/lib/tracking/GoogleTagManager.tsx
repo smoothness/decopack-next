@@ -3,9 +3,9 @@
 import {Suspense, useEffect, useState} from 'react'
 import {getCookieConsentValue} from 'react-cookie-consent'
 
-import {GoogleTagManagerScripts} from '@/libs/tracking/GoogleTagManagerScripts'
-import {trackingConfig} from '@/libs/tracking/config.tracking'
-import {grantConsentForEverything} from '@/libs/tracking/utils.tracking'
+import {GoogleTagManagerScripts} from '@/lib/tracking/GoogleTagManagerScripts'
+import {trackingConfig} from '@/lib/tracking/config.tracking'
+import {grantConsentForEverything} from '@/lib/tracking/utils.tracking'
 
 export function GoogleTagManager() {
   const [isGtagLoaded, setIsGtagLoaded] = useState(false)

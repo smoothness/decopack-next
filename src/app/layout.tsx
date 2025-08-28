@@ -4,10 +4,10 @@ import {Mohave} from 'next/font/google'
 // Import env validation to ensure environment variables are validated early
 import '../../env'
 
-import {GoogleTagManager} from '@/libs/tracking/GoogleTagManager'
-import {IS_GTM_ENABLED} from '@/libs/tracking/config.tracking'
+import {GoogleTagManager} from '@/lib/tracking/GoogleTagManager'
+import {IS_GTM_ENABLED} from '@/lib/tracking/config.tracking'
 import {RootInnerLayout} from '@/components/layout/RootInnerLayout'
-import {getMenu} from '@/libs/shopify'
+import {getMenu} from '@/lib/shopify'
 
 import '@/app/globals.css'
 

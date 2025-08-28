@@ -4,7 +4,7 @@ import {useEffect} from 'react'
 import {usePathname, useSearchParams} from 'next/navigation'
 import Script from 'next/script'
 
-import {markFeatureUsage, pageview} from '@/libs/tracking/utils.tracking'
+import {markFeatureUsage, pageview} from '@/lib/tracking/utils.tracking'
 
 type Props = {
   gaId: string

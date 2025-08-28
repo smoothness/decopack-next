@@ -1,7 +1,7 @@
 import {Suspense} from 'react'
 import clsx from 'clsx'
 
-import {getCollections} from '@/libs/shopify'
+import {getCollections} from '@/lib/shopify'
 import {FilterList} from '@/app/search/components/FilterList'
 
 const skeleton = 'mb-3 h-4 w-5/6 animate-pulse rounded'
