@@ -13,6 +13,7 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
 export async function addItem(
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   prevState: any,
   selectedVariantId: string | undefined
 ) {
@@ -27,12 +28,14 @@ export async function addItem(
       { merchandiseId: selectedVariantId, quantity: 1 },
     ]);
     revalidateTag(TAGS.cart);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (error) {
     return "Error adding item to cart";
   }
 }
 
 export async function updateItemQuantity(
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   prevState: any,
   payload: {
     merchandiseId: string;
@@ -80,6 +83,7 @@ export async function updateItemQuantity(
   }
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export async function removeItem(prevState: any, merchandiseId: string) {
   const cartId = (await cookies()).get("cartId")?.value;
 
@@ -103,6 +107,7 @@ export async function removeItem(prevState: any, merchandiseId: string) {
     } else {
       return "Item not found in cart";
     }
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (error) {
     return "Error removing item from cart";
   }

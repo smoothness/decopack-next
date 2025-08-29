@@ -5,7 +5,6 @@ import {
   CaretDownIcon,
   MagnifyingGlassIcon,
   UserIcon,
-  ShoppingCartIcon,
 } from '@phosphor-icons/react'
 
 import {cn} from '@/lib/utils'
