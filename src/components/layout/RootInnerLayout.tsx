@@ -1,44 +1,30 @@
 'use client'
 
-import {Suspense, useEffect, useState} from 'react'
+import {Suspense} from 'react'
 import CookieConsent from 'react-cookie-consent'
 import {motion} from 'framer-motion'
 
 import {trackingConfig} from '@/lib/tracking/config.tracking'
 import {grantConsentForEverything} from '@/lib/tracking/utils.tracking'
-import {Menu} from '@/lib/shopify/types'
-import {getCookie} from '@/lib/utils/cookies'
+import {Menu, Cart} from '@/lib/shopify/types'
 
 import Navbar from '@/components/layout/navbar/Navbar'
 import Footer from '@/components/layout/footer/Footer'
-import {CartProvider} from '../cart/cart-context'
-import {getCart} from '@/lib/shopify'
+import {CartProvider} from '@/components/cart/cart-context'
+
 // TODO: refactor to use Anime.js instead of Framer Motion
 
 export function RootInnerLayout({
   children,
   menuPromise,
   aboutMenuPromise,
+  cartPromise,
 }: {
   children: React.ReactNode
   menuPromise: Promise<Menu[]>
   aboutMenuPromise: Promise<Menu[]>
+  cartPromise: Promise<Cart | undefined>
 }) {
-  // Initialize with a Promise that resolves to undefined
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const [cartPromise, setCartPromise] = useState<Promise<any>>(() =>
-    Promise.resolve(undefined),
-  )
-
-  useEffect(() => {
-    // Only access cookies after hydration
-    const cartId = getCookie('cartId')
-    if (cartId) {
-      setCartPromise(getCart(cartId))
-    } else {
-      setCartPromise(Promise.resolve(undefined))
-    }
-  }, [])
 
   return (
     <div className="flex min-h-screen flex-col">

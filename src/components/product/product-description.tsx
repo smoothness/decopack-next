@@ -1,6 +1,6 @@
 import {Product} from '@/lib/shopify/types'
 
-import {Price} from '@/app/search/components/Price'
+import Price from '@/components/common/Price'
 import VariantSelector from '@/components/product/variant-selector'
 import Prose from '@/components/common/prose'
 import {AddToCart} from '@/components/cart/add-to-cart'

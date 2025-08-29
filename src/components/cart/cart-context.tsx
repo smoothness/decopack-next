@@ -1,8 +1,7 @@
 'use client'
-
 /* eslint-disable react-hooks/exhaustive-deps */
 import {Cart, CartItem, Product, ProductVariant} from '@/lib/shopify/types'
-import {createContext, use, useContext, useMemo, useOptimistic} from 'react'
+import React, {createContext, use, useContext, useMemo, useOptimistic, startTransition} from 'react'
 
 type UpdateType = 'plus' | 'minus' | 'delete'
 
@@ -19,6 +18,10 @@ type CartAction =
   | {
       type: 'ADD_ITEM'
       payload: {variant: ProductVariant; product: Product}
+    }
+  | {
+      type: 'SYNC_SERVER_CART'
+      payload: Cart | undefined
     }
 
 const CartContext = createContext<CartContextType | undefined>(undefined)
@@ -174,6 +177,10 @@ function cartReducer(state: Cart | undefined, action: CartAction): Cart {
         lines: updatedLines,
       }
     }
+    case 'SYNC_SERVER_CART': {
+      // Replace the current cart with the server cart
+      return action.payload || createEmptyCart()
+    }
     default:
       return currentCart
   }
@@ -191,16 +198,28 @@ export function CartProvider({
     initialCart,
     cartReducer,
   )
+  
+  // Update the optimistic cart when the server cart changes
+  React.useEffect(() => {
+    // This will re-sync the optimistic cart when initialCart changes
+    startTransition(() => {
+      updateOptimisticCart({ type: 'SYNC_SERVER_CART', payload: initialCart })
+    })
+  }, [initialCart, updateOptimisticCart])
 
   const updateCartItem = (merchandiseId: string, updateType: UpdateType) => {
-    updateOptimisticCart({
-      type: 'UPDATE_ITEM',
-      payload: {merchandiseId, updateType},
+    startTransition(() => {
+      updateOptimisticCart({
+        type: 'UPDATE_ITEM',
+        payload: {merchandiseId, updateType},
+      })
     })
   }
 
   const addCartItem = (variant: ProductVariant, product: Product) => {
-    updateOptimisticCart({type: 'ADD_ITEM', payload: {variant, product}})
+    startTransition(() => {
+      updateOptimisticCart({type: 'ADD_ITEM', payload: {variant, product}})
+    })
   }
 
   const value = useMemo(

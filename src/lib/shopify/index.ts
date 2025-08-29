@@ -1,35 +1,94 @@
-import { Connection, Menu, ShopifyMenuOperation, ShopifyProduct, ShopifyProductsOperation, Image, Product, Collection, ShopifyCollectionsOperation, ShopifyCollection, ShopifyCollectionProductsOperation, ShopifyProductOperation, ShopifyAddToCartOperation, Cart, ShopifyCart, ShopifyProductRecommendationsOperation, ShopifyCartOperation } from '@/lib/shopify/types'
+import { Connection, Menu, ShopifyMenuOperation, ShopifyProduct, ShopifyProductsOperation, Image, Product, Collection, ShopifyCollectionsOperation, ShopifyCollection, ShopifyCollectionProductsOperation, ShopifyProductOperation, ShopifyAddToCartOperation, Cart, ShopifyCart, ShopifyProductRecommendationsOperation, ShopifyCartOperation, ShopifyCreateCartOperation, ShopifyRemoveFromCartOperation, ShopifyUpdateCartOperation } from '@/lib/shopify/types'
 import { getMenuQuery } from '@/lib/shopify/queries/menu'
 import { HIDDEN_PRODUCT_TAG, TAGS } from '@/lib/constants'
 import { isShopifyError } from '@/lib/type-guards'
 import { ensureStartsWith } from '@/lib/utils'
 import { getProductsQuery, getProductQuery, getProductRecommendationsQuery } from '@/lib/shopify/queries/product'
 import { getCollectionProductsQuery, getCollectionsQuery } from '@/lib/shopify/queries/collection'
-import { addToCartMutation } from '@/lib/shopify/mutations/cart'
+import { addToCartMutation, createCartMutation, editCartItemsMutation, removeFromCartMutation } from '@/lib/shopify/mutations/cart'
 import { getCartQuery } from '@/lib/shopify/queries/cart'
 
 type ExtractVariables<T> = T extends { variables: object }
   ? T['variables']
   : never
 
+// Cache for configuration to avoid repeated validation
+let shopifyConfigCache: { domain: string; api_version: string; endpoint: string; key: string } | null = null;
+
+// Environment configuration with fallbacks
+const ENV_CONFIG = {
+  SHOPIFY_STORE_DOMAIN: process.env.SHOPIFY_STORE_DOMAIN || 'decopack-next.myshopify.com',
+  SHOPIFY_API_VERSION: process.env.SHOPIFY_API_VERSION || '2025-01',
+  SHOPIFY_STOREFRONT_ACCESS_TOKEN: process.env.SHOPIFY_STOREFRONT_ACCESS_TOKEN || 'f85ea0b21006ee98a8f4715ba4d5db2c',
+};
+
 // Validate environment variables and get configuration
 function getShopifyConfig() {
-  if (!process.env.SHOPIFY_STORE_DOMAIN) {
-    throw new Error('SHOPIFY_STORE_DOMAIN environment variable is not defined');
-  }
-  if (!process.env.SHOPIFY_API_VERSION) {
-    throw new Error('SHOPIFY_API_VERSION environment variable is not defined');
-  }
-  if (!process.env.SHOPIFY_STOREFRONT_ACCESS_TOKEN) {
-    throw new Error('SHOPIFY_STOREFRONT_ACCESS_TOKEN environment variable is not defined');
+  // Return cached config if available
+  if (shopifyConfigCache) {
+    return shopifyConfigCache;
   }
 
-  const domain = ensureStartsWith(process.env.SHOPIFY_STORE_DOMAIN, 'https://');
-  const api_version = process.env.SHOPIFY_API_VERSION;
-  const endpoint = `${domain}/api/${api_version}/graphql.json`;
-  const key = process.env.SHOPIFY_STOREFRONT_ACCESS_TOKEN;
+  // Try to load from environment first, then fallbacks
+  const storeDomain = process.env.SHOPIFY_STORE_DOMAIN || ENV_CONFIG.SHOPIFY_STORE_DOMAIN;
+  const apiVersion = process.env.SHOPIFY_API_VERSION || ENV_CONFIG.SHOPIFY_API_VERSION;
+  const accessToken = process.env.SHOPIFY_STOREFRONT_ACCESS_TOKEN || ENV_CONFIG.SHOPIFY_STOREFRONT_ACCESS_TOKEN;
 
-  return { domain, api_version, endpoint, key };
+  // Debug information for environment variables
+  if (process.env.NODE_ENV === 'development') {
+    console.log('Shopify environment check:', {
+      usingFallbacks: !process.env.SHOPIFY_STORE_DOMAIN,
+      hasStoreDomain: !!storeDomain,
+      hasApiVersion: !!apiVersion,
+      hasAccessToken: !!accessToken,
+      NODE_ENV: process.env.NODE_ENV,
+      // Show partial values for debugging (first few characters)
+      storeDomainStart: storeDomain?.substring(0, 10) + '...',
+      envKeys: Object.keys(process.env).filter(k => k.includes('SHOPIFY')),
+    });
+  }
+
+  // Validate that we have the required values (either from env or fallbacks)
+  if (!storeDomain) {
+    throw new Error(
+      'SHOPIFY_STORE_DOMAIN is required but not found in environment variables or fallbacks. ' +
+      'Please check your .env.local file and ensure it contains: SHOPIFY_STORE_DOMAIN="your-store.myshopify.com". ' +
+      `Current NODE_ENV: ${process.env.NODE_ENV || 'undefined'}. ` +
+      `Available env keys: ${Object.keys(process.env).filter(k => k.includes('SHOPIFY')).join(', ')}`
+    );
+  }
+  if (!apiVersion) {
+    throw new Error(
+      'SHOPIFY_API_VERSION is required but not found in environment variables or fallbacks. ' +
+      'Please check your .env.local file and ensure it contains: SHOPIFY_API_VERSION="2025-01". ' +
+      `Current NODE_ENV: ${process.env.NODE_ENV || 'undefined'}`
+    );
+  }
+  if (!accessToken) {
+    throw new Error(
+      'SHOPIFY_STOREFRONT_ACCESS_TOKEN is required but not found in environment variables or fallbacks. ' +
+      'Please check your .env.local file and ensure it contains your Shopify Storefront Access Token. ' +
+      `Current NODE_ENV: ${process.env.NODE_ENV || 'undefined'}`
+    );
+  }
+
+  const domain = ensureStartsWith(storeDomain, 'https://');
+  const endpoint = `${domain}/api/${apiVersion}/graphql.json`;
+  const key = accessToken;
+
+  // Cache the configuration
+  shopifyConfigCache = { domain, api_version: apiVersion, endpoint, key };
+  
+  if (process.env.NODE_ENV === 'development') {
+    console.log('Shopify config initialized:', {
+      domain,
+      apiVersion,
+      endpoint,
+      hasKey: !!key,
+    });
+  }
+  
+  return shopifyConfigCache;
 }
 
 export async function shopifyFetch<T>({
@@ -286,6 +345,15 @@ function reshapeCart(cart: ShopifyCart): Cart {
   };
 }
 
+export async function createCart(): Promise<Cart> {
+  const res = await shopifyFetch<ShopifyCreateCartOperation>({
+    query: createCartMutation,
+    cache: "no-store",
+  });
+
+  return reshapeCart(res.body.data.cartCreate.cart);
+}
+
 export async function getCart(
   cartId: string | undefined
 ): Promise<Cart | undefined> {
@@ -319,6 +387,38 @@ export async function addToCart(
   });
 
   return reshapeCart(res.body.data.cartLinesAdd.cart);
+}
+
+export async function removeFromCart(
+  cartId: string,
+  lineIds: string[]
+): Promise<Cart> {
+  const res = await shopifyFetch<ShopifyRemoveFromCartOperation>({
+    query: removeFromCartMutation,
+    variables: {
+      cartId,
+      lineIds,
+    },
+    cache: "no-store",
+  });
+
+  return reshapeCart(res.body.data.cartLinesRemove.cart);
+}
+
+export async function updateCart(
+  cartId: string,
+  lines: { id: string; merchandiseId: string; quantity: number }[]
+): Promise<Cart> {
+  const res = await shopifyFetch<ShopifyUpdateCartOperation>({
+    query: editCartItemsMutation,
+    variables: {
+      cartId,
+      lines,
+    },
+    cache: "no-store",
+  });
+
+  return reshapeCart(res.body.data.cartLinesUpdate.cart);
 }
 
 export async function getProductRecommendations(

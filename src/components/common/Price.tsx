@@ -1,6 +1,6 @@
 import clsx from 'clsx'
 
-export function Price({
+export default function Price({
   amount,
   className,
   currencyCode = 'USD',

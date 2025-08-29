@@ -23,6 +23,7 @@ import {
 import {Popover, PopoverContent, PopoverTrigger} from '@/components/ui/popover'
 import DecopackLogo from '@/components/svgs/DecopackLogo'
 import Search from '@/components/layout/navbar/Search'
+import CartModal from '@/components/cart/modal'
 
 const linkClasses = cn(
   `data-[active]:focus:bg-gray-100 data-[active]:hover:text-accent data-[active]:bg-gray-100 data-[active]:text-primary-700 hover:text-accent focus:bg-gray-100 focus:text-primary-700 focus-visible:ring-ring/50 [&_svg:not([class*='text-'])]:text-muted-foreground flex flex-col gap-1 rounded-sm p-2 text-sm transition-all outline-none focus-visible:ring-[3px] focus-visible:outline-1 [&_svg:not([class*='size-'])]:size-4 relative after:content-[''] after:absolute after:left-0 after:bottom-0 after:h-[2px] after:w-0 after:bg-accent after:transition-all after:duration-300 after:ease-in-out hover:after:w-full focus:after:w-full`,
@@ -167,6 +168,9 @@ export default function Navbar({menuPromise}: {menuPromise: Promise<Menu[]>}) {
           <Link href={'#'}>
             <ShoppingCartIcon size={20} color="#262626" weight="regular" />
           </Link>
+          <div className="flex justify-end md:w-1/3">
+            <CartModal />
+          </div>
         </div>
         {/* Mobile menu trigger */}
         <Popover>

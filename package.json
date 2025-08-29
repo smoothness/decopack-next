@@ -10,6 +10,7 @@
     "format": "npx prettier --write 'src/**/*.{js,ts,jsx,tsx,mdx}' --log-level 'warn'"
   },
   "dependencies": {
+    "@headlessui/react": "^2.2.7",
     "@phosphor-icons/react": "^2.1.10",
     "@radix-ui/react-slot": "^1.1.2",
     "class-variance-authority": "^0.7.1",

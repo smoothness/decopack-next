@@ -5,8 +5,9 @@ import {PlusIcon} from '@phosphor-icons/react'
 import clsx from 'clsx'
 
 import {Product, ProductVariant} from '@/lib/shopify/types'
-import {useProduct} from '@/components/product/product-context'
+
 import {useCart} from '@/components/cart/cart-context'
+import {useProduct} from '@/components/product/product-context'
 import {addItem} from '@/components/cart/actions'
 
 function SubmitButton({
@@ -79,6 +80,10 @@ export function AddToCart({product}: {product: Product}) {
       action={async () => {
         addCartItem(finalVariant, product)
         await actionWithVariant()
+        // Trigger cart refresh after server action completes
+        if (typeof window !== 'undefined') {
+          window.dispatchEvent(new CustomEvent('cart-refresh'))
+        }
       }}
     >
       <SubmitButton

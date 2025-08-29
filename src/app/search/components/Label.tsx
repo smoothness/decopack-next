@@ -1,4 +1,4 @@
-import {Price} from '@/app/search/components/Price'
+import Price from '@/components/common/Price'
 import clsx from 'clsx'
 
 export function Label({
