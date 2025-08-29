@@ -7,6 +7,11 @@ module.exports = {
         hostname: 'cdn.shopify.com',
         pathname: '/s/files/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'deifkwefumgah.cloudfront.net',
+        pathname: '/**',
+      },
     ],
   },
 }
