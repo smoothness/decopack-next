@@ -88,7 +88,11 @@ export default function CartModal() {
 
               {!cart || cart.lines.length === 0 ? (
                 <div>
-                  <ShoppingCartIcon className="h-16" />
+                  <ShoppingCartIcon
+                    size={20}
+                    color="#262626"
+                    weight="regular"
+                  />
                   <p className="mt-6 text-center text-2xl font-bold">
                     Your Cart is Empty.
                   </p>

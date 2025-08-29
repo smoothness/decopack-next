@@ -1,7 +1,7 @@
 'use client'
 
 import {ProductOption, ProductVariant} from '@/lib/shopify/types'
-import {useProduct, useUpdateURL} from './product-context'
+import {useProduct, useUpdateURL} from '@/components/product/product-context'
 import clsx from 'clsx'
 
 type Combination = {

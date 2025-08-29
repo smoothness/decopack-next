@@ -165,12 +165,7 @@ export default function Navbar({menuPromise}: {menuPromise: Promise<Menu[]>}) {
           <Link href={'#'}>
             <UserIcon size={20} color="#262626" weight="regular" />
           </Link>
-          <Link href={'#'}>
-            <ShoppingCartIcon size={20} color="#262626" weight="regular" />
-          </Link>
-          <div className="flex justify-end md:w-1/3">
-            <CartModal />
-          </div>
+          <CartModal />
         </div>
         {/* Mobile menu trigger */}
         <Popover>
