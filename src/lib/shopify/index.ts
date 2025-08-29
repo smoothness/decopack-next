@@ -78,7 +78,7 @@ function getShopifyConfig() {
 
   // Cache the configuration
   shopifyConfigCache = { domain, api_version: apiVersion, endpoint, key };
-  
+
   if (process.env.NODE_ENV === 'development') {
     console.log('Shopify config initialized:', {
       domain,
@@ -87,7 +87,7 @@ function getShopifyConfig() {
       hasKey: !!key,
     });
   }
-  
+
   return shopifyConfigCache;
 }
 
@@ -209,6 +209,7 @@ export async function getMenu(handle: string): Promise<Menu[]> {
         .replace(domain, '')
         // .replace('/collections', '/search')
         .replace('pages/', ''),
+      submenu: null,
     })) || []
     // })) ?? [];
   )

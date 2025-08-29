@@ -1,6 +1,14 @@
 export type Menu = {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  submenu: any;
   title: string;
   path: string;
+};
+
+export type SubMenu = {
+  title: string;
+  path: string;
+  items: Menu[];
 };
 
 export type ShopifyMenuOperation = {

@@ -117,7 +117,7 @@ export default function Navbar({menuPromise}: {menuPromise: Promise<Menu[]>}) {
                 <NavigationMenuList className="gap-2">
                   {menu.map((item: Menu, index: number) => (
                     <NavigationMenuItem key={item.title}>
-                      {item.submenu ? (
+                      {item?.submenu ? (
                         <Link
                           href={item.path || '#'}
                           className={cn(
