@@ -1,4 +1,5 @@
-import {ArrowRight} from 'lucide-react'
+import Image from 'next/image'
+import {ArrowRightIcon} from '@phosphor-icons/react/ssr'
 
 import {Badge} from '@/components/ui/badge'
 import {Button} from '@/components/ui/button'
@@ -85,7 +86,7 @@ const CardRow = ({
           <Button variant="link" className="w-full sm:w-auto" asChild>
             <a href={buttonUrl} target="_blank">
               {buttonText}
-              <ArrowRight className="ml-2 size-4" />
+              <ArrowRightIcon size={20} color="#262626" weight="regular" />
             </a>
           </Button>
         </div>
@@ -101,9 +102,11 @@ const CardRow = ({
                   target="_blank"
                   className="fade-in transition-opacity duration-200 hover:opacity-70"
                 >
-                  <img
+                  <Image
                     src={post.image}
                     alt={post.title}
+                    width={400}
+                    height={300}
                     className="h-full w-full object-cover object-center"
                   />
                 </a>
@@ -125,7 +128,7 @@ const CardRow = ({
                   className="text-foreground flex items-center hover:underline"
                 >
                   Read more
-                  <ArrowRight className="ml-2 size-4" />
+                  <ArrowRightIcon size={20} color="#262626" weight="regular" />
                 </a>
               </CardFooter>
             </Card>

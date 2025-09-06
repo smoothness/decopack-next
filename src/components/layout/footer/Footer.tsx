@@ -1,12 +1,16 @@
 import {use} from 'react'
 import Link from 'next/link'
-import {InstagramLogoIcon, FacebookLogoIcon} from '@phosphor-icons/react'
+import {InstagramLogoIcon, FacebookLogoIcon} from '@phosphor-icons/react/ssr'
 
 import DecopackLogo from '@/components/svgs/DecopackLogo'
 // import {getMenu} from '@/lib/shopify'
 import {Menu} from '@/lib/shopify/types'
 
-function Footer({aboutMenuPromise}: {aboutMenuPromise: Promise<Menu[]>}) {
+export function Footer({
+  aboutMenuPromise,
+}: {
+  aboutMenuPromise: Promise<Menu[]>
+}) {
   const aboutMenu = use(aboutMenuPromise)
 
   return (
@@ -115,5 +119,3 @@ function Footer({aboutMenuPromise}: {aboutMenuPromise: Promise<Menu[]>}) {
     </footer>
   )
 }
-
-export default Footer

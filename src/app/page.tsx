@@ -1,4 +1,4 @@
-import Hero from '@/components/ui/hero'
+import {Hero} from '@/components/hero/Hero'
 import CardRow from '@/components/ui/card-row'
 import ClientsSlider from '@/components/clients-slider/clients-slider'
 
@@ -15,7 +15,6 @@ export default function Home() {
     <div className="m-auto max-w-[1440px] px-5">
       <Hero />
       <ClientsSlider />
-
       <CardRow />
     </div>
   )

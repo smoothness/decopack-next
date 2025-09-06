@@ -8,8 +8,8 @@ import {trackingConfig} from '@/lib/tracking/config.tracking'
 import {grantConsentForEverything} from '@/lib/tracking/utils.tracking'
 import {Menu, Cart} from '@/lib/shopify/types'
 
-import Navbar from '@/components/layout/navbar/Navbar'
-import Footer from '@/components/layout/footer/Footer'
+import {Header} from '@/components/layout/header/Header'
+import {Footer} from '@/components/layout/footer/Footer'
 import {CartProvider} from '@/components/cart/cart-context'
 
 // TODO: refactor to use Anime.js instead of Framer Motion
@@ -25,7 +25,6 @@ export function RootInnerLayout({
   aboutMenuPromise: Promise<Menu[]>
   cartPromise: Promise<Cart | undefined>
 }) {
-
   return (
     <div className="flex min-h-screen flex-col">
       <CartProvider cartPromise={cartPromise}>
@@ -34,9 +33,9 @@ export function RootInnerLayout({
             <div className="h-20 w-full">Cargado menú principal...</div>
           }
         >
-          <Navbar menuPromise={menuPromise} />
+          <Header menuPromise={menuPromise} />
         </Suspense>
-        <main className="relative w-full flex-1 py-40">{children}</main>
+        <main>{children}</main>
         <Suspense
           fallback={
             <div className="h-20 w-full">Cargado menú sobre nosotros...</div>
