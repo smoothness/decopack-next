@@ -70,12 +70,17 @@ export const Hero = ({
               </Button>
             )}
             {buttons.secondary && (
-              <Button asChild size="xl" variant="outline" className="w-fit">
+              <Button
+                asChild
+                size="xl"
+                variant="outlineReverse"
+                className="w-fit"
+              >
                 <Link href={buttons.secondary.url} className="group">
                   {buttons.secondary.text}
                   <ArrowRightIcon
                     size={20}
-                    className="text-[#262626] transition-colors group-hover:text-white"
+                    className="text-primary group-hover:text-accent transition-colors"
                     weight="regular"
                   />
                 </Link>

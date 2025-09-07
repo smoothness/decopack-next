@@ -19,7 +19,7 @@ export function Footer({
       role="contentinfo"
       aria-label="Site footer"
     >
-      <div className="mx-auto max-w-[1440px] px-5 py-10">
+      <div className="mx-auto max-w-[1440px] px-10 py-10">
         {/* Top Section */}
         <div className="flex flex-col justify-between lg:flex-row">
           {/* Quick Links */}

@@ -4,7 +4,7 @@ import Link from 'next/link'
 import {
   CaretDownIcon,
   MagnifyingGlassIcon,
-  UserIcon,
+  // UserIcon,
 } from '@phosphor-icons/react'
 
 import {cn} from '@/lib/utils'
@@ -21,7 +21,7 @@ import {
 } from '@/components/ui/navigation-menu'
 import {Popover, PopoverContent, PopoverTrigger} from '@/components/ui/popover'
 import {Search} from '@/components/layout/header/Search'
-import CartModal from '@/components/cart/modal'
+import {CartModal} from '@/components/cart/modal'
 
 const linkClasses = cn(
   `data-[active]:focus:bg-gray-100 data-[active]:hover:text-accent data-[active]:bg-gray-100 data-[active]:text-primary-700 hover:text-accent focus:bg-gray-100 focus:text-primary-700 focus-visible:ring-ring/50 [&_svg:not([class*='text-'])]:text-muted-foreground flex flex-col gap-1 rounded-sm p-2 text-sm transition-all outline-none focus-visible:ring-[3px] focus-visible:outline-1 [&_svg:not([class*='size-'])]:size-4 relative after:content-[''] after:absolute after:left-0 after:bottom-0 after:h-[2px] after:w-0 after:bg-accent after:transition-all after:duration-300 after:ease-in-out hover:after:w-full focus:after:w-full`,
@@ -33,17 +33,29 @@ export function Navbar({menuPromise}: {menuPromise: Promise<Menu[]>}) {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
   const [isSearchOpen, setIsSearchOpen] = useState(false)
   const dropdownRef = useRef<HTMLDivElement>(null)
+  const searchRef = useRef<HTMLDivElement>(null)
+  const searchButtonRef = useRef<HTMLButtonElement>(null)
   const timeoutRef = useRef<NodeJS.Timeout | null>(null)
 
   // Close dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (
-        dropdownRef.current &&
-        !dropdownRef.current.contains(event.target as Node)
-      ) {
+      const target = event.target as Node
+
+      // Check if click is outside menu dropdown
+      if (dropdownRef.current && !dropdownRef.current.contains(target)) {
         setActiveDropdown(null)
         setIsDropdownOpen(false)
+      }
+
+      // Check if click is outside search dropdown (but not on the search button)
+      if (
+        searchRef.current &&
+        !searchRef.current.contains(target) &&
+        searchButtonRef.current &&
+        !searchButtonRef.current.contains(target)
+      ) {
+        setIsSearchOpen(false)
       }
     }
 
@@ -83,14 +95,14 @@ export function Navbar({menuPromise}: {menuPromise: Promise<Menu[]>}) {
 
   function handleSearchToggle() {
     if (isSearchOpen) {
-      setIsDropdownOpen(false)
+      // Close search
       setIsSearchOpen(false)
+    } else {
+      // Open search - close any menu dropdowns first
       setActiveDropdown(null)
-      return
+      setIsDropdownOpen(false)
+      setIsSearchOpen(true)
     }
-    setIsDropdownOpen(true)
-    setIsSearchOpen(true)
-    setActiveDropdown(null)
   }
 
   // console.log('%c menu:', 'color:black; background:magenta;', menu)
@@ -143,17 +155,23 @@ export function Navbar({menuPromise}: {menuPromise: Promise<Menu[]>}) {
       {/* Right side */}
       <div className="flex items-center gap-4">
         <Button
+          variant="icon"
+          ref={searchButtonRef}
           onClick={(e) => {
             e.preventDefault()
             handleSearchToggle()
           }}
           className="pointer-events-auto cursor-pointer shadow-none"
         >
-          <MagnifyingGlassIcon size={20} color="#262626" weight="regular" />
+          <MagnifyingGlassIcon
+            color="#262626"
+            weight="regular"
+            className="size-5"
+          />
         </Button>
-        <Link href={'#'}>
+        {/* <Link href={'#'}>
           <UserIcon size={20} color="#262626" weight="regular" />
-        </Link>
+        </Link> */}
         <CartModal />
       </div>
 
@@ -256,6 +274,7 @@ export function Navbar({menuPromise}: {menuPromise: Promise<Menu[]>}) {
 
       {/* Full-width search bar*/}
       <div
+        ref={searchRef}
         className={`absolute top-full right-0 left-0 z-50 origin-top transform border-b border-gray-50 bg-white shadow-xs transition-all duration-300 ease-in-out ${
           isSearchOpen
             ? 'translate-y-0 scale-y-100 opacity-100'

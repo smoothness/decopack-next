@@ -19,12 +19,13 @@ import {EditItemQuantityButton} from '@/components/cart/edit-item-quantity-butto
 
 import LoadingDots from '@/components/common/LoadingDots'
 import {createCartAndSetCookie, redirectToCheckout} from './actions'
+import {Button} from '@/components/ui/button'
 
 type MerchandiseSearchParams = {
   [key: string]: string
 }
 
-export default function CartModal() {
+export function CartModal() {
   const {cart, updateCartItem} = useCart()
   const [isOpen, setIsOpen] = useState(false)
   const quantityRef = useRef(cart?.totalQuantity)
@@ -53,9 +54,9 @@ export default function CartModal() {
 
   return (
     <>
-      <button aria-label="Open cart" onClick={openCart}>
+      <Button variant="icon" aria-label="Open cart" onClick={openCart}>
         <OpenCart quantity={cart?.totalQuantity} />
-      </button>
+      </Button>
       <Transition show={isOpen}>
         <Dialog onClose={closeCart} className="relative z-50">
           <Transition.Child
@@ -89,7 +90,7 @@ export default function CartModal() {
               {!cart || cart.lines.length === 0 ? (
                 <div>
                   <ShoppingCartIcon
-                    size={20}
+                    size={32}
                     color="#262626"
                     weight="regular"
                   />
