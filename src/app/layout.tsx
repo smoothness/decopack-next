@@ -1,5 +1,5 @@
 import type {Metadata} from 'next'
-import {Mohave} from 'next/font/google'
+import {Mohave, Overpass_Mono} from 'next/font/google'
 import {cookies} from 'next/headers'
 
 // Import env validation to ensure environment variables are validated early
@@ -16,13 +16,15 @@ const mohave = Mohave({
   subsets: ['latin'],
   weight: ['300', '400', '500', '600', '700'],
   variable: '--font-mohave',
+  display: 'swap',
 })
 
-// const overpassMono = Overpass_Mono({
-//   subsets: ['latin'],
-//   weight: ['300', '400', '500', '600', '700'],
-//   variable: '--font-overpass-mono',
-// })
+const overpassMono = Overpass_Mono({
+  subsets: ['latin'],
+  weight: ['300', '400', '500', '600', '700'],
+  variable: '--font-overpass-mono',
+  display: 'swap',
+})
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -36,14 +38,18 @@ export default async function RootLayout({
 }>) {
   const menuPromise = getMenu('main-menu')
   const aboutMenuPromise = getMenu('footer-about')
-  
+
   // Handle cart data server-side
   const cartId = (await cookies()).get('cartId')?.value
   const cartPromise = getCart(cartId)
 
   return (
-    <html lang="en">
-      <body className={`${mohave.className} antialiased`}>
+    <html
+      lang="en"
+      className={`${mohave.variable} ${overpassMono.variable} h-full`}
+    >
+      <head />
+      <body className="">
         {IS_GTM_ENABLED && <GoogleTagManager />}
         <RootInnerLayout
           menuPromise={menuPromise}

@@ -15,17 +15,19 @@ export function Footer({
 
   return (
     <footer
-      className="border-t border-neutral-100 bg-neutral-50 pb-8"
+      className="text-primary-foreground border-t border-neutral-100 bg-gray-400 pb-8"
       role="contentinfo"
       aria-label="Site footer"
     >
-      <div className="mx-auto max-w-[1440px] px-10 py-10">
+      <div className="mx-auto max-w-[1440px] px-10 pt-16 pb-10">
         {/* Top Section */}
         <div className="flex flex-col justify-between lg:flex-row">
           {/* Quick Links */}
           <div className="flex gap-12 pb-10 lg:gap-25">
             <div>
-              <h3 className="text-subtitle-sm mb-4">Sobre Nosotros</h3>
+              <h3 className="text-subtitle-sm text-primary-foreground mb-4">
+                Sobre Nosotros
+              </h3>
               <nav aria-label="Footer main navigation">
                 {aboutMenu.length > 0 ? (
                   <ul className="space-y-3">
@@ -33,7 +35,7 @@ export function Footer({
                       <li key={item.title} className="mb-0">
                         <Link
                           href={item.path}
-                          className="hover:text-accent focus:text-accent text-sm font-light transition-colors duration-200 focus:underline focus:outline-none"
+                          className="hover:text-primary-200 focus:primary-200 text-sm font-light text-gray-200 transition-colors duration-200 focus:underline focus:outline-none"
                         >
                           {item.title}
                         </Link>
@@ -46,15 +48,17 @@ export function Footer({
 
             {/* Products */}
             <div>
-              <h3 className="text-subtitle-sm mb-4">Productos</h3>
+              <h3 className="text-subtitle-sm text-primary-foreground mb-4">
+                Productos
+              </h3>
               <nav aria-label="Footer product navigation">
                 <ul className="space-y-3">
                   <li className="mb-0">
                     <Link
                       href="/products"
-                      className="hover:text-accent focus:text-accent text-sm font-light transition-colors duration-200 focus:underline focus:outline-none"
+                      className="hover:text-primary-200 focus:text-primary-200 text-sm font-light text-gray-200 transition-colors duration-200 focus:underline focus:outline-none"
                     >
-                      Products
+                      Productos
                     </Link>
                   </li>
                 </ul>
@@ -64,8 +68,10 @@ export function Footer({
 
           {/* Contact Info */}
           <div className="lg:max-w-[30%]">
-            <h3 className="text-subtitle-sm mb-4">Contáctenos</h3>
-            <p className="text-body-sm mb-4">
+            <h3 className="text-subtitle-sm text-primary-foreground mb-4">
+              Contáctenos
+            </h3>
+            <p className="text-body-sm text-primary-foreground mb-4">
               Lorem ipsum dolor sit amet consectetur adipisicing elit.
               Reprehenderit voluptatem deleniti exercitationem explicabo
               obcaecati? Est pariatur, enim perspiciatis, tempora reprehenderit
@@ -93,7 +99,7 @@ export function Footer({
                   aria-label="Follow us on Instagram"
                   className="hover:text-accent focus:text-accent focus:ring-accent text-gray-00 rounded-full p-2 transition-colors duration-200 focus:ring-2 focus:ring-offset-2 focus:outline-none"
                 >
-                  <InstagramLogoIcon size={24} weight="thin" />
+                  <InstagramLogoIcon size={24} weight="thin" color="white" />
                 </Link>
                 <Link
                   href="https://facebook.com/decopack"
@@ -102,14 +108,14 @@ export function Footer({
                   aria-label="Follow us on Facebook"
                   className="hover:text-accent focus:text-accent focus:ring-accent rounded-full p-2 text-gray-400 transition-colors duration-200 focus:ring-2 focus:ring-offset-2 focus:outline-none"
                 >
-                  <FacebookLogoIcon size={24} weight="thin" />
+                  <FacebookLogoIcon size={24} weight="thin" color="white" />
                 </Link>
               </div>
             </div>
 
             {/* Copyright and Legal */}
             <div>
-              <p className="font-light text-gray-400">
+              <p className="font-light text-gray-200">
                 <small>© 2025 Decopack. Derechos reservados.</small>
               </p>
             </div>

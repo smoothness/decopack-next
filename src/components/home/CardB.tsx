@@ -1,10 +1,12 @@
+'use client'
+
 import Image from 'next/image'
 import clsx from 'clsx'
 
-import {Card, CardContent, CardHeader} from '@/components/ui/card'
+import {Card, CardContent} from '@/components/ui/card'
 import {Button} from '@/components/ui/button'
 
-type PanelProps = {
+type CardProps = {
   title: string
   text1: string
   text2: string
@@ -20,7 +22,7 @@ export function CardB({
   image,
   buttonText,
   gray,
-}: PanelProps) {
+}: CardProps) {
   return (
     <Card
       className={clsx(

@@ -56,9 +56,7 @@ export const Hero = ({
             )} */}
           <h1 className="mb-4">
             Tu Marca
-            <span className="block text-[clamp(3rem,6vw,5rem)]">
-              Nuestro Empaque
-            </span>
+            <span className="block">Nuestro Empaque</span>
           </h1>
           <p className="mb-7 max-w-[75vw] text-[clamp(20px,3vw,28px)] leading-6 md:leading-8">
             {description}

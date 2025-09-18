@@ -4,7 +4,7 @@ import clsx from 'clsx'
 import {Card, CardContent, CardHeader} from '@/components/ui/card'
 import {Button} from '@/components/ui/button'
 
-type PanelProps = {
+type CardProps = {
   title: string
   text: string
   image: string
@@ -12,7 +12,7 @@ type PanelProps = {
   gray?: boolean
 }
 
-export function CardA({title, text, image, buttonText, gray}: PanelProps) {
+export function CardA({title, text, image, buttonText, gray}: CardProps) {
   return (
     <Card
       className={clsx(

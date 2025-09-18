@@ -1,7 +1,12 @@
+import Image from 'next/image'
+
 import {Hero} from '@/components/hero/Hero'
 import {Panel} from '@/components/panel/Panel'
 import {CardA} from '@/components/home/CardA'
 import {CardB} from '@/components/home/CardB'
+import {CardC} from '@/components/home/CardC'
+import {Carousel} from '@/components/carousel/Carousel'
+import {Button} from '@/components/ui/button'
 // import ClientsSlider from '@/components/clients-slider/clients-slider'
 
 export const metadata = {
@@ -68,6 +73,51 @@ const fakeCards2 = [
     image: '/placeholders/placeholder-1.png',
     buttonText: 'Diseña tu Empaque',
   },
+  {
+    title: 'Casa Dominga',
+    text1: 'Bolsa de papel / B4',
+    text2: 'Impresión litográfica',
+    image: '/placeholders/placeholder-1.png',
+    buttonText: 'Diseña tu Empaque',
+  },
+  {
+    title: 'Icon',
+    text1: 'Bolsa de papel / B4',
+    text2: 'Impresión litográfica',
+    image: '/placeholders/placeholder-1.png',
+    buttonText: 'Diseña tu Empaque',
+  },
+]
+
+const fakeCards3 = [
+  {
+    avatar: '/placeholders/avatar.png',
+    name: 'Ricardo Visona',
+    position: 'Fundador / Chef',
+    company: 'Casa Dominga',
+    text: '“Decopack ha sido un socio fundamental en el crecimiento de nuestro negocio. Su compromiso con la calidad y la innovación nos ha permitido ofrecer a nuestros clientes empaques que no solo protegen nuestros productos, sino que también reflejan la esencia de nuestra marca.”',
+  },
+  {
+    avatar: '/placeholders/avatar.png',
+    name: 'Ricardo Visona',
+    position: 'Fundador / Chef',
+    company: 'Casa Dominga',
+    text: '“Decopack ha sido un socio fundamental en el crecimiento de nuestro negocio. Su compromiso con la calidad y la innovación nos ha permitido ofrecer a nuestros clientes empaques que no solo protegen nuestros productos, sino que también reflejan la esencia de nuestra marca.”',
+  },
+  {
+    avatar: '/placeholders/avatar.png',
+    name: 'Ricardo Visona',
+    position: 'Fundador / Chef',
+    company: 'Casa Dominga',
+    text: '“Decopack ha sido un socio fundamental en el crecimiento de nuestro negocio. Su compromiso con la calidad y la innovación nos ha permitido ofrecer a nuestros clientes empaques que no solo protegen nuestros productos, sino que también reflejan la esencia de nuestra marca.”',
+  },
+  {
+    avatar: '/placeholders/avatar.png',
+    name: 'Ricardo Visona',
+    position: 'Fundador / Chef',
+    company: 'Casa Dominga',
+    text: '“Decopack ha sido un socio fundamental en el crecimiento de nuestro negocio. Su compromiso con la calidad y la innovación nos ha permitido ofrecer a nuestros clientes empaques que no solo protegen nuestros productos, sino que también reflejan la esencia de nuestra marca.”',
+  },
 ]
 
 export default function Home() {
@@ -76,8 +126,23 @@ export default function Home() {
       <div className="m-auto max-w-[1440px] px-10">
         <Hero />
       </div>
-      {/* <ClientsSlider /> */}
-      <Panel title="Variedad Para Cada Necesidad" gray>
+      <Panel title="Socios de empaque de tus marcas favoritas" gray>
+        <div className="flex flex-wrap justify-center gap-5 lg:flex-nowrap">
+          <Carousel
+            data={fakeCards2}
+            component={CardB}
+            slidesPerView={{
+              mobile: 1,
+              tablet: 2,
+              desktop: 3,
+            }}
+            showIndicators={true}
+            showControls={true}
+            infinite={true}
+          />
+        </div>
+      </Panel>
+      <Panel title="Variedad Para Cada Necesidad">
         <div className="flex flex-wrap justify-center gap-5 lg:flex-nowrap">
           {fakeCards1?.map((card, index) => (
             <CardA
@@ -90,7 +155,7 @@ export default function Home() {
           ))}
         </div>
       </Panel>
-      <Panel title="Socios de empaque de tus marcas favoritas">
+      <Panel title="Recientes" gray>
         <div className="flex flex-wrap justify-center gap-5 lg:flex-nowrap">
           {fakeCards2?.map((card, index) => (
             <CardB
@@ -102,6 +167,46 @@ export default function Home() {
               buttonText={card.buttonText}
             />
           ))}
+        </div>
+      </Panel>
+      <Panel>
+        <div className="flex flex-col items-center justify-center gap-6 lg:flex-row lg:gap-10">
+          <div>
+            <Image
+              src="/placeholders/placeholder-banner.png"
+              alt="Placeholder"
+              width={571}
+              height={378}
+              className="m-auto"
+              sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 571px"
+            />
+          </div>
+          <div>
+            <h3 className="">Creamos empaques a tu medida</h3>
+            <p className="mb-1 font-semibold">Cajas Casa Dominga</p>
+            <p className="mb-8 text-sm">
+              Personalización y diseño a medida para cada cliente.
+            </p>
+            <Button variant="default" size="lg">
+              Diseña tu Empaque
+            </Button>
+          </div>
+        </div>
+      </Panel>
+      <Panel title="Lo que dicen nuestros clientes" gray>
+        <div className="flex flex-wrap justify-center gap-5 lg:flex-nowrap">
+          <Carousel
+            data={fakeCards3}
+            component={CardC}
+            slidesPerView={{
+              mobile: 1,
+              tablet: 2,
+              desktop: 3,
+            }}
+            showIndicators={true}
+            showControls={true}
+            infinite={true}
+          />
         </div>
       </Panel>
     </div>
