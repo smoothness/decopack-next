@@ -16,7 +16,7 @@ export function CardA({title, text, image, buttonText, gray}: CardProps) {
   return (
     <Card
       className={clsx(
-        'basis-[400px] gap-3 border border-gray-50 bg-white',
+        'shadow-card relative z-0 basis-[400px] gap-3 border border-gray-50 bg-white',
         gray && 'bg-gray-25 border-0',
       )}
     >
@@ -33,7 +33,9 @@ export function CardA({title, text, image, buttonText, gray}: CardProps) {
             height={280}
             className="mb-4 rounded-lg"
           />
-          <Button size="sm">{buttonText}</Button>
+          <Button variant="secondary" size="sm">
+            {buttonText}
+          </Button>
         </div>
       </CardContent>
     </Card>

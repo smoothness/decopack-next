@@ -159,7 +159,7 @@ export function Carousel({
       {/* Carousel Container */}
       <div
         ref={containerRef}
-        className="scrollbar-hide flex overflow-x-auto scroll-smooth"
+        className="scrollbar-hide flex overflow-x-auto scroll-smooth py-4"
         style={{
           scrollSnapType: 'x mandatory',
           WebkitOverflowScrolling: 'touch',

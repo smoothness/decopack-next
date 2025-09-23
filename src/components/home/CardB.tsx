@@ -26,7 +26,7 @@ export function CardB({
   return (
     <Card
       className={clsx(
-        'basis-[400px] gap-3 border border-gray-50 bg-white',
+        'shadow-card relative z-0 basis-[400px] gap-3 border border-gray-50 bg-white',
         gray && 'bg-gray-25 border-0',
       )}
     >
@@ -37,9 +37,7 @@ export function CardB({
         </p>
         <p className="mb-0 text-center text-sm">{text1}</p>
         <p className="mb-6 text-center text-sm">{text2}</p>
-        <Button size="sm" variant="secondary">
-          {buttonText}
-        </Button>
+        <Button size="sm">{buttonText}</Button>
       </CardContent>
     </Card>
   )

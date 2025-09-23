@@ -26,7 +26,7 @@ export function CardC({
   return (
     <Card
       className={clsx(
-        'basis-[500px] border border-gray-50 bg-white',
+        'shadow-card relative z-0 basis-[500px] border border-gray-50 bg-white',
         gray && 'bg-gray-25 border-0',
       )}
     >

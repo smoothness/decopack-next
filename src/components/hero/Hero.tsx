@@ -63,17 +63,12 @@ export const Hero = ({
           </p>
           <div className="flex flex-col justify-start gap-2 sm:flex-row">
             {buttons.primary && (
-              <Button asChild size="xl" className="w-fit">
+              <Button asChild size="xl" variant="secondary">
                 <Link href={buttons.primary.url}>{buttons.primary.text}</Link>
               </Button>
             )}
             {buttons.secondary && (
-              <Button
-                asChild
-                size="xl"
-                variant="outlineReverse"
-                className="w-fit"
-              >
+              <Button asChild size="xl">
                 <Link href={buttons.secondary.url} className="group">
                   {buttons.secondary.text}
                   <ArrowRightIcon
