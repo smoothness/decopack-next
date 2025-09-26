@@ -1,3 +1,4 @@
+import { unstable_ViewTransition as ViewTransition } from 'react'
 import Image from 'next/image'
 
 import {Hero} from '@/components/hero/Hero'
@@ -5,6 +6,7 @@ import {Panel} from '@/components/panel/Panel'
 import {CardA} from '@/components/home/CardA'
 import {CardB} from '@/components/home/CardB'
 import {CardC} from '@/components/home/CardC'
+import {CardD} from '@/components/home/CardD'
 import {Carousel} from '@/components/carousel/Carousel'
 import {Button} from '@/components/ui/button'
 // import ClientsSlider from '@/components/clients-slider/clients-slider'
@@ -155,16 +157,15 @@ export default function Home() {
           ))}
         </div>
       </Panel>
-      <Panel title="Recientes" gray>
+      <Panel title="Recientes" gray RightCTA={RightCTA}>
         <div className="flex flex-wrap justify-center gap-5 lg:flex-nowrap">
           {fakeCards2?.map((card, index) => (
-            <CardB
+            <CardD
               key={index}
               title={card.title}
               text1={card.text1}
               text2={card.text2}
               image={card.image}
-              buttonText={card.buttonText}
             />
           ))}
         </div>
@@ -212,3 +213,11 @@ export default function Home() {
     </div>
   )
 }
+
+function RightCTA() {
+  return (
+    <Button variant="secondary" size="xl">
+      Diseña tu Empaque
+    </Button>
+  )
+} 

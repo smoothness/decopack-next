@@ -124,21 +124,25 @@
 }
 
 @layer components {
-  .shadow-card {
-    position: relative;
-    z-index: 0;
-    box-shadow: 0 3px 6px 0 var(--color-primary-50);
+  @keyframes panelAppear {
+    0% {
+      opacity: 0;
+      transform: translateY(-60px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  .panel {
+    animation: panelAppear linear;
+    animation-timeline: view();
+    animation-range: entry 0% cover 40%;
   }
 
-  .shadow-card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 9;
-    box-shadow: 0 0px 3px #d2d2d2;
+  .shadow-card {
+    box-shadow: 0 2px 4px 0 var(--color-primary-50);
   }
 
   .gradient-border {
@@ -174,6 +178,8 @@
   .gradient-border:hover::before {
     background: #743ad5 !important;
   }
+
+
 }
 
 @layer utilities {
